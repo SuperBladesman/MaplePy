@@ -93,11 +93,11 @@ The additivity analysis applies a seven-category classification to distinguish g
 
 If you use MaplePy in your research, please cite:
 
-> P. Gross, N. Reeves-McLaren, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *Angew. Chem. Int. Ed.*, 2026 (submitted).
+> P. Gross, N. Reeves-McLaren, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", (in press)
 
 ## Acknowledgements
 
-MaplePy was developed with LLM-assisted coding (Claude, Anthropic; Opus 4) for data processing. All scientific interpretation and validation was performed by the authors.
+MaplePy was developed with LLM-assisted coding (Claude, Anthropic; Opus 4.6) for data processing. All scientific interpretation and validation was performed by the authors.
 
 ## Licence
 
