@@ -15,18 +15,18 @@
     },
     "methodology": {
       "icsd_calibrated": "Median MAPLE across qualifying ICSD entries at ambient conditions (273-303 K, <0.15 MPa). High-pressure entries, zero-MAPLE entries, and non-stoichiometric compositions excluded.",
-      "validation": "Values from MaplePy benchmark calculations (NaCl, TiO2, BaTiO3).",
+      "validation": "Recorded as a MaplePy validation calculation. The one entry so marked, Cu2O, does not reproduce (MaplePy gives 797.9 kcal/mol at a = 4.270 A) and is marked sourced: false.",
       "estimated": "Interpolated from chemical trends within structure type families (e.g., lanthanide contraction in bixbyite RE2O3 series), or set by hand. These have no published or computed source (sourced: false), carry additional uncertainty, and should be replaced when a source becomes available. Hopper 1.2.9 and later report every decomposition that uses one."
     },
     "source_classifications": {
       "icsd_median": "Calibrated from ICSD median (88 of 112, 79%)",
       "estimated": "Interpolated or estimated, with no published or computed source (23 of 112, 21%)",
-      "validation": "From MaplePy validation structures (1 of 112, 1%)"
+      "validation": "From a MaplePy validation structure (1 of 112, 1%); does not reproduce, so unsourced"
     },
     "n_entries": 112,
     "licence": "CC-BY-4.0",
-    "citation": "Gross, P.; Reeves-McLaren, N. Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides. J. Appl. Cryst., under review (2026).",
-    "metadata_note": "v1.1.1: the citation names the journal the manuscript is under review at; each entry says whether its value has a source (sourced); n_entries and source_classifications are computed from the entries list. No value has changed since v1.0.0."
+    "citation": "Reeves-McLaren, N.; Gross, P. Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides. J. Appl. Cryst., under review (2026).",
+    "metadata_note": "v1.1.1: the citation names the journal the manuscript is under review at; each entry says whether its value has a source that reproduces (sourced); CuO, ZnO and Cu2O carry a review note; n_entries and source_classifications are computed from the entries list. No value has changed since v1.0.0."
   },
   "_field_descriptions": {
     "formula": "Reduced chemical formula of the binary oxide",
@@ -36,8 +36,8 @@
     "n_icsd_entries": "Number of qualifying ICSD entries used for the median (null if estimated)",
     "icsd_range_min": "Minimum MAPLE across qualifying ICSD entries (null if estimated)",
     "icsd_range_max": "Maximum MAPLE across qualifying ICSD entries (null if estimated)",
-    "confidence": "high = ICSD median from >= 10 entries; medium = ICSD median from 2-9 entries or validation; low = estimated/interpolated",
-    "sourced": "false where the value is an estimate with no published or computed source",
+    "confidence": "high = ICSD median from >= 10 entries; medium = ICSD median from 2-9 entries; low = estimated, a single entry, or a source that does not reproduce",
+    "sourced": "false where the value has no published or computed source, or where its recorded source does not reproduce",
     "review_note": "Present where the entry needs re-deriving; states why"
   },
   "entries": [
@@ -269,8 +269,9 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium",
-      "sourced": true
+      "confidence": "low",
+      "sourced": false,
+      "review_note": "Recorded as a MaplePy validation value, but MaplePy gives 797.9 kcal/mol for cuprite at a = 4.270 A (Cu-O 1.849 A), not 730.0. The value is kept so that results can be reproduced; it needs re-deriving from ambient ICSD entries."
     },
     {
       "formula": "CuO",

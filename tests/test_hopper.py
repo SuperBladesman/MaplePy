@@ -93,8 +93,11 @@ def test_the_reference_table_and_its_flags():
     assert len(e) == d['_metadata']['n_entries'] == 112
     est = {x['formula'] for x in e if x['source'] == 'estimated'}
     assert len(est) == 23
-    assert {x['formula'] for x in e if not x['sourced']} == est
-    assert maplepy.hopper_engine().ESTIMATED_BINARIES == est
+    # Cu2O's recorded validation source does not reproduce (797.9, not 730.0)
+    unsourced = {x['formula'] for x in e if not x['sourced']}
+    assert unsourced == est | {'Cu2O'}
+    assert all('review_note' in x for x in e if x['formula'] in ('CuO', 'ZnO', 'Cu2O'))
+    assert maplepy.hopper_engine().ESTIMATED_BINARIES == unsourced
     assert 'J. Appl. Cryst.' in d['_metadata']['citation']
 
 
@@ -115,3 +118,20 @@ def test_hopper_reads_the_bundled_table():
 def test_a_folder_without_maplepy_output_fails_loudly(tmp_path):
     with pytest.raises(FileNotFoundError, match='maple_summary.csv'):
         maplepy.additivity(tmp_path)
+
+
+def test_the_recorded_cu2o_value_does_not_reproduce(tmp_path):
+    # The table records 730.0 for cuprite as a MaplePy validation value.
+    # MaplePy gives 797.9 at a = 4.270 A (Cu-O 1.849 A), so the entry is
+    # marked unsourced and Hopper names it wherever it is used.
+    s = Structure(Lattice.cubic(4.270), ['O', 'O', 'Cu', 'Cu', 'Cu', 'Cu'],
+                  [[0, 0, 0], [.5, .5, .5], [.25, .25, .25], [.75, .75, .25],
+                   [.75, .25, .75], [.25, .75, .75]])
+    s.add_oxidation_state_by_element({'Cu': 1, 'O': -2})
+    CifWriter(s).write_file(tmp_path / 'cu2o.cif')
+    r = maplepy.compute(tmp_path / 'cu2o.cif')
+    assert r.total_maple == pytest.approx(797.9, abs=0.1)
+    cu2o = next(x for x in json.loads(TABLE.read_text())['entries']
+                if x['formula'] == 'Cu2O')
+    assert cu2o['maple_kcal_mol'] == 730.0 and cu2o['sourced'] is False
+

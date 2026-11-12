@@ -11,8 +11,9 @@ The first packaged release, running MaplePy 1.3.6 and Hopper 1.2.9.
 - `maplepy FOLDER` runs `batch_maple()` on a folder of CIFs; `maplepy FILE.cif` prints one structure; `maplepy --validate` runs the notebook's three known answers. `hopper RESULTS` runs Hopper on a MaplePy run.
 - A Python interface: `maplepy.compute()`, `run_folder()`, `additivity()` and `validate()`, and the two engines' own functions through `maplepy.engine()` and `maplepy.hopper_engine()`.
 - The engines are the notebooks' cells, copied by `tools/build_engine.py`; CI fails if they drift. `tools/equivalence.py` compares the notebooks' output with the package's on a folder of CIFs.
-- Tests: the three sourced targets asserted independently, each of MaplePy's decisions on constructed structures, Hopper's classification of the examples, the command lines, and the release metadata; CI on Linux, Windows and macOS, Python 3.11 to 3.13, pandas 2 and 3.
+- Tests: the three sourced targets asserted independently, each of MaplePy's decisions on constructed structures, Hopper's classification of the examples, the command lines, and the release metadata; CI on Linux with Python 3.11 to 3.13 under pandas 2 and 3, and on Windows and macOS with Python 3.13.
 - Constructed example CIFs, none from the ICSD.
+- The notebooks' prose corrected where it still described earlier versions: in MaplePy, the validation tolerance, brookite (given for reference, not computed), the batch cell's picker and output folder, the definition of `disordered`, and the docstring of `batch_maple()`; in Hopper, see 1.2.9. No MaplePy code changed, so it keeps 1.3.6.
 - The reference data in `data/`: the binary oxide table (1.1.1), `maple_library.json` (1.0.1) and `common_oxidation_states.json`. The May 2026 repository had only the binary table, so its oxidation-state chain lost two levels.
 
 Checked against the study: Hopper 1.2.9, run on the MaplePy 1.3.6 results for the 938 perovskites and 472 pyrochlores of the *J. Appl. Cryst.* manuscript, gives every structure the classification Hopper 1.2.8 gave it, with identical residuals.
@@ -21,8 +22,9 @@ Checked against the study: Hopper 1.2.9, run on the MaplePy 1.3.6 results for th
 
 ### 1.2.9 – unreleased
 
-- Every decomposition that uses an estimated reference value names it, in a new column, `estimated_binaries`, and the batch summary counts them. 23 of the 112 values are estimates with no source. In the study, 82 of the 1,380 decomposed structures rest on one: 52 perovskites (43 of them on Ni<sub>2</sub>O<sub>3</sub>) and 30 pyrochlores. Nothing is reclassified.
+- Every decomposition that uses an estimated or unsourced reference value names it, in a new column, `estimated_binaries`, and the batch summary counts them. 23 of the 112 values are estimates with no source, and the source recorded for a 24th, Cu<sub>2</sub>O, does not reproduce (table 1.1.1). In the study, no structure uses Cu<sub>2</sub>O, and 82 of the 1,380 decomposed structures rest on one: 52 perovskites (43 of them on Ni<sub>2</sub>O<sub>3</sub>) and 30 pyrochlores. Nothing is reclassified.
 - The inline fallback labels "Estimated, to be updated" read "Estimated, unsourced".
+- Prose that still described the first version corrected: the table of codes and their order in section 4 and the header of the classification cell (seven codes, ascending order), a usage example naming a function that does not exist, and two notes in section 9 (that the reference values "must be replaced", and that a *Z* fix was "in progress"; MaplePy has had it since 1.1). No result changes.
 - A local path in a comment generalised.
 
 ### 1.2.8 – 25th August 2026
@@ -76,7 +78,7 @@ Checked against the study: Hopper 1.2.9, run on the MaplePy 1.3.6 results for th
 
 ### Hopper.ipynb – 21st May 2026
 
-The version uploaded to this repository: nine codes in three tiers.
+The version uploaded to this repository: six codes in use beside Additive, in three tiers, and three more reserved (1.2, 2.5, 2.6).
 
 ## MaplePy
 
@@ -84,7 +86,7 @@ The version uploaded to this repository: nine codes in three tiers.
 
 - The space group 62 origin correction is removed. It chose between the deposited structure and one with the O2 sublattice shifted by (½, ½, 0) by their Ewald energy, the quantity under test; it changed 44 of 938 perovskites, by up to 8.1%, made one shortest contact worse, and in none of the 44 turned a failing geometry into a sound one. MAPLE is now computed on the structure as deposited, and the geometry flags do the work. The reasons are kept in the notebook where the function was.
 
-The release copy of 1.3.6 differs from the working copy only in its notes cell, which said that mixed-occupancy sites were not handled (they have been since 1.1) and cited the WAGII paper and Eir out of date, and in a local path in a comment. No code differs.
+The release copy of 1.3.6 differs from the working copy only in prose: its notes cell, which said that mixed-occupancy sites were not handled (they have been since 1.1) and cited the WAGII paper and Eir out of date; four markdown cells and a docstring that described earlier versions; and a local path in a comment. No code differs.
 
 ### 1.3.5 – 25th August 2026
 

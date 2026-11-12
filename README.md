@@ -46,16 +46,16 @@ Hopper decomposes each structure into binary oxides from the per-site oxidation 
 | 2.7 | 2 | Split-site disorder model: two sites closer than 0.5 Å |
 | 3.1 | 3 | Δ ≥ 1% with nothing above to explain it: a genuine violation |
 
-Tier 1 has no residual to interpret, Tier 2 has one that should not be taken at face value, and Tier 3 has one that should. The codes are assigned in a fixed order, built on one rule: a caveat must not mask a defect. So Tier 1 comes first; then the structural defects, 2.5 and 2.7, whatever the residual; then the additive test; then the other Tier 2 caveats; then 3.1. A disordered structure that agrees with its binaries is additive; a structure with impossible coordinates is 2.5 even when its residual is small.
+Tier 1 has no residual to interpret, Tier 2 has one that should not be taken at face value, and Tier 3 has one that should. The codes are assigned in a fixed order, built on one rule: a caveat must not mask a defect. So Tier 1 comes first; then the structural defects, 2.7 and then 2.5, whatever the residual; then the additive test; then the other Tier 2 caveats; then 3.1. A disordered structure that agrees with its binaries is additive; a structure with impossible coordinates is 2.5 even when its residual is small.
 
-From Hopper 1.2.9, every decomposition that uses an estimated reference value says which (`estimated_binaries`). Nothing is reclassified on that account.
+From Hopper 1.2.9, every decomposition that uses an estimated or unsourced reference value says which (`estimated_binaries`). Nothing is reclassified on that account.
 
 ## Getting started
 
-You need Python 3.11 or later. MaplePy is tested with Python 3.11 to 3.13 and with pandas 2 and 3, on Linux, Windows and macOS.
+You need Python 3.11 or later. MaplePy is tested on Linux with Python 3.11 to 3.13 under pandas 2 and 3, and on Windows and macOS with Python 3.13.
 
 ```bash
-pip install "git+https://github.com/SuperBladesman/MaplePy.git"
+pip install "git+https://github.com/SuperBladesman/MaplePy.git@v1.4.0"
 maplepy --validate
 ```
 
@@ -91,7 +91,7 @@ maplepy examples/          # writes examples/outputs_YYYYMMDD_HHMMSS/
 hopper examples/           # reads the latest run and classifies it
 ```
 
-`maplepy FOLDER` runs the notebook's `batch_maple()` on every CIF in the folder (not its subfolders), on several processes where there are several cores (`--workers 1` for serial; the results are identical). `--plots` draws the notebook's three diagnostic plots; `--additivity` runs Hopper straight after. `hopper RESULTS --figures` draws the paper's figures into the run folder too, and says which, if any, the data cannot support.
+`maplepy FOLDER` runs the notebook's `batch_maple()` on every file ending `.cif` in the folder (lower case, and not in subfolders), on several processes where there are several cores (`--workers 1` for serial; the results are identical). `--plots` draws the notebook's three diagnostic plots; `--additivity` runs Hopper straight after. `hopper RESULTS --figures` draws the paper's figures into the run folder too, and says which, if any, the data cannot support.
 
 The examples are constructed structures, none from the ICSD: the validation structures as CIFs, SrTiO<sub>3</sub>, an idealised pyrochlore, a disordered (Ba,Sr)TiO<sub>3</sub>, BaTiO<sub>3</sub> with its lattice parameter mistyped (Hopper: 2.5), and SrFeO<sub>3</sub> without oxidation states (MaplePy stops and asks). [examples/make_examples.py](examples/make_examples.py) writes them.
 
@@ -133,23 +133,23 @@ The package is built from their cells by `tools/build_engine.py`, and the tests 
 | `maple_failed.csv` | MaplePy | CIF that could not be processed, with the reason |
 | `additivity_classified.csv` | Hopper | structure: binary sum, Δ, oxygen balance, missing and estimated binaries, code, tier, label, Hopper version |
 
-Hopper also writes the perovskite (*Pnma*) and pyrochlore (*Fd*3̄*m*) subsets, and the reference table as it used it.
+Hopper also writes two subsets, chosen by space group alone: `additivity_perovskites.csv` (nine space groups, *Pnma* among them) and `additivity_pyrochlores.csv` (*Fd*3̄*m* and *Fm*3̄*m*, so a rock-salt oxide lands among the pyrochlores). `binary_oxide_reference.csv` is the notebook's inline table of 104 binaries; the values Hopper used are those of the 112-entry table below, which agrees with the inline table wherever both hold a formula (Hopper stops if they do not).
 
 ## The binary oxide reference table
 
-[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) contains 112 binary oxides. 88 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range; 23 are estimates, interpolated within a structure type or set by hand, with no published or computed source (`"sourced": false`); 1 comes from a MaplePy validation structure. The table contains derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. Two entries (CuO, ZnO) rest on high-pressure rock-salt phases and carry a note saying they need re-deriving. [data/README.md](data/README.md) describes the three data files.
+[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) contains 112 binary oxides. 88 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range; 23 are estimates, interpolated within a structure type or set by hand, with no published or computed source (`"sourced": false`); 1, Cu<sub>2</sub>O, was recorded as a MaplePy validation value and does not reproduce (MaplePy gives 797.9 kcal/mol for cuprite, not 730.0), so it is marked unsourced too. The table contains derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. Three entries carry a note saying they need re-deriving: CuO and ZnO, which rest on high-pressure rock-salt phases, and Cu<sub>2</sub>O. [data/README.md](data/README.md) describes the three data files.
 
 ## Limitations
 
 - **Oxides.** The anion is identified by the sign of its charge, and by oxygen where no charges are yet assigned; the reference table and Hopper's decompositions are for oxides only.
 - **Molecular anions.** Where covalent groups (SO<sub>4</sub><sup>2−</sup>, PO<sub>4</sub><sup>3−</sup>) are present, the additivity theorem needs increments rather than molecular binary oxides; Hopper does not implement them.
 - **Shared sites in Hopper.** A site shared by two cations is decomposed as its majority species, at the mean charge. Such structures are flagged (2.3, or 1.4 where the mean is not an oxidation state), but their residuals are against an approximate sum.
-- **Estimates.** In the study, 82 of the 1,380 decomposed structures rest on an estimated value, 43 of them on Ni<sub>2</sub>O<sub>3</sub>, which has no ambient phase to measure. `estimated_binaries` names them.
+- **Estimates.** In the study, 82 of the 1,380 decomposed structures rest on an estimated value (none on Cu<sub>2</sub>O), 43 of them on Ni<sub>2</sub>O<sub>3</sub>, which has no ambient phase to measure. `estimated_binaries` names them.
 - **A user-supplied binary table.** Hopper's `BINARY_CSV` option reads your own binary values, but the bundled table then overrides any formula it also holds. To use your own values throughout, edit or replace the JSON.
 
 ## Tests
 
-`maplepy --validate` runs the notebook's own validation. The test suite (`pytest`) asserts the three sourced targets independently, then tests each decision above on constructed structures, the classification of the examples, the command lines, the agreement of the package's cells with the notebooks, and the release metadata. On every push, CI runs it on Linux with Python 3.11, 3.12 and 3.13 under pandas 2 and 3, and on Windows and macOS. [tools/equivalence.py](tools/equivalence.py) runs both notebooks headless on a folder of CIFs and compares their output with the package's, file by file and cell by cell.
+`maplepy --validate` runs the notebook's own validation. The test suite (`pytest`) asserts the three sourced targets independently, then tests each decision above on constructed structures, the classification of the examples, the command lines, the agreement of the package's cells with the notebooks, and the release metadata. On every push, CI runs it on Linux with Python 3.11, 3.12 and 3.13 under pandas 2 and 3, and on Windows and macOS with Python 3.13. [tools/equivalence.py](tools/equivalence.py) runs both notebooks headless on a folder of CIFs and compares their output with the package's, file by file and cell by cell.
 
 No ICSD file is distributed here or used in the tests. ICSD CIFs are licensed by FIZ Karlsruhe.
 
@@ -157,7 +157,7 @@ No ICSD file is distributed here or used in the tests. ICSD CIFs are licensed by
 
 If you use MaplePy or Hopper, please cite the release you used (`CITATION.cff`; GitHub's "Cite this repository" reads it) and the paper describing the method:
 
-> P. Gross and N. Reeves-McLaren, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *J. Appl. Cryst.*, under review.
+> N. Reeves-McLaren and P. Gross, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *J. Appl. Cryst.*, under review.
 
 ## Contributing
 

@@ -14,15 +14,15 @@ Each entry gives the formula, the value, the structure type and space group, and
 
 - `icsd_median` (88 entries): the median MAPLE that MaplePy computes over qualifying entries of the Inorganic Crystal Structure Database at ambient conditions (273–303 K, < 0.15 MPa), excluding high-pressure entries (identified by anomalously short *d*<sub>ref</sub>), failed calculations and non-stoichiometric compositions. `n_icsd_entries`, `icsd_range_min` and `icsd_range_max` give the number of entries and their range. The median is used for its robustness to the occasional misindexed entry.
 - `estimated` (23 entries): interpolated within a structure type family, or set by hand. These have no published or computed source, and say so (`"sourced": false`). They are kept so that results made with them can be reproduced, and Hopper reports every decomposition that uses one.
-- `validation` (1 entry): Cu<sub>2</sub>O, from a MaplePy validation structure.
+- `validation` (1 entry): Cu<sub>2</sub>O, recorded as a MaplePy validation value. It does not reproduce: MaplePy gives 797.9 kcal/mol for cuprite at *a* = 4.270 Å, not 730.0. It is marked `"sourced": false`, with a review note, and kept so that results can be reproduced; no structure in the study uses it.
 
-`confidence` is `high` for a median over 10 or more entries, `medium` for 2 to 9 entries or a validation value, and `low` for an estimate or an entry flagged for re-deriving (`review_note`).
+`confidence` is `high` for a median over 10 or more entries, `medium` for 2 to 9 entries, and `low` for an estimate, a single entry, or an entry flagged for re-deriving (`review_note`).
 
 The table contains derived statistics only: no coordinates, and no content of any CIF. Eight of the 112 entries are molecular or non-metal oxides (SO<sub>3</sub>, P<sub>2</sub>O<sub>5</sub>, B<sub>2</sub>O<sub>3</sub>, As<sub>2</sub>O<sub>5</sub>, Sb<sub>2</sub>O<sub>3</sub>, SeO<sub>3</sub>, Cl<sub>2</sub>O<sub>7</sub>, H<sub>2</sub>O), added for work beyond perovskites and pyrochlores; Hopper's inline fallback table has the other 104, and the notebook stops if a value ever differs between the two.
 
 ### Versions
 
-- **1.1.1** (this release): the citation names the journal the manuscript is under review at (it named an earlier submission); each entry says whether it has a source (`sourced`); CuO and ZnO are marked for re-deriving. No value has changed.
+- **1.1.1** (this release): the citation names the journal the manuscript is under review at (it named an earlier submission); each entry says whether it has a source that reproduces (`sourced`); CuO, ZnO and Cu<sub>2</sub>O are marked for re-deriving, with their confidence lowered from medium to low, and Cu<sub>2</sub>O is marked unsourced. No value has changed.
 - **1.1.0** (24th August 2026): entry counts and source classifications computed from the entries, rather than written by hand.
 - **1.0.0** (21st May 2026): the first release, uploaded with the notebooks.
 

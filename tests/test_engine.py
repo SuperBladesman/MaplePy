@@ -37,6 +37,67 @@ def test_the_bundled_library_supplies_states_the_cif_lacks(tmp_path):
     assert r.total_maple == pytest.approx(3255.8, abs=0.05)
 
 
+ATOM_TYPE_CIF = """data_CaO
+_symmetry_space_group_name_H-M 'F m -3 m'
+_symmetry_Int_Tables_number 225
+_cell_length_a 4.81
+_cell_length_b 4.81
+_cell_length_c 4.81
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+loop_
+ _space_group_symop_operation_xyz
+ 'x, y, z'
+ 'x, y+1/2, z+1/2'
+ 'x+1/2, y, z+1/2'
+ 'x+1/2, y+1/2, z'
+loop_
+ _atom_type_symbol
+ _atom_type_oxidation_number
+ Ca2+ 2
+ O2- -2
+loop_
+ _atom_site_label
+ _atom_site_type_symbol
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ Ca1 Ca 0 0 0
+ O1 O 0.5 0.5 0.5
+"""
+
+
+def test_the_atom_type_loop_is_parsed():
+    # Level 3 reads the loop itself, element by element
+    import tempfile, pathlib
+    p = pathlib.Path(tempfile.mkdtemp()) / 'cao.cif'
+    p.write_text(ATOM_TYPE_CIF)
+    assert m._extract_cif_oxidation_states(p) == {'Ca': 2, 'O': -2}
+
+
+def test_the_atom_type_loop_is_used_when_pymatgen_assigns_nothing(tmp_path, monkeypatch):
+    # Level 3. Current pymatgen reads this loop itself (level 2), so level 3
+    # is reached only when its own assignment fails; that is simulated here.
+    p = tmp_path / 'cao.cif'
+    p.write_text(ATOM_TYPE_CIF)
+    assert 'CIF (per-site, charge-neutral)' in maplepy.compute(p).log
+    monkeypatch.setattr(m, '_has_native_oxi_states', lambda s: False)
+    r = maplepy.compute(p)
+    assert 'CIF (_atom_type, element-level fallback)' in r.log
+    assert r.madelung_factor == pytest.approx(1.7476, abs=1e-4)
+
+
+def test_single_state_elements_need_no_library_entry(tmp_path):
+    # Level 5: Ca and O each have one common state, and CaO has no formula
+    # override, so common_oxidation_states.json settles it
+    s = Structure.from_spacegroup('Fm-3m', Lattice.cubic(4.81), ['Ca', 'O'],
+                                  [[0, 0, 0], [0.5, 0.5, 0.5]])
+    r = maplepy.compute(write(s, tmp_path / 'cao.cif'))
+    assert 'common_oxidation_states.json' in r.log
+    assert r.madelung_factor == pytest.approx(1.7476, abs=1e-4)
+
+
 def test_an_ambiguous_state_stops_the_calculation(tmp_path):
     # Fe could be 2+ or 3+ (or, here, 4+): MaplePy asks rather than guesses
     p = write(perovskite(3.85, 'Sr', 'Fe'), tmp_path / 'sfo.cif')
