@@ -1,0 +1,26 @@
+{
+  "title": "MaplePy: MAPLE from crystallographic information files, and Hoppe's additivity theorem tested at database scale",
+  "version": "1.4.0",
+  "upload_type": "software",
+  "description": "<p>MaplePy reads CIF files and computes the Madelung part of the lattice energy (MAPLE) of each structure, per site and in total, with the Ewald summation in pymatgen. It records where each oxidation state came from, derives Z from the site multiplicities, treats disorder by mean-field charges, and flags geometry that cannot carry a Madelung energy. Hopper decomposes each ternary oxide into its binary oxides, computes the residual of Hoppe's additivity theorem against a 112-entry reference table, and classifies each structure into one of twelve codes in three tiers, so that a residual is interpreted rather than merely reported. Both run as Jupyter notebooks or as the Python package maplepy, with the command lines maplepy and hopper.</p><p>This release is maplepy 1.4.0, running MaplePy 1.3.6 and Hopper 1.2.9. CHANGELOG.md describes every version. The code is released under the MIT licence and the data tables in data/ under CC-BY 4.0.</p>",
+  "creators": [
+    {
+      "name": "Reeves-McLaren, Nik",
+      "affiliation": "University of Sheffield",
+      "orcid": "0000-0002-1061-1230"
+    }
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "crystallography",
+    "MAPLE",
+    "Madelung energy",
+    "lattice energy",
+    "additivity theorem",
+    "crystal structure validation",
+    "ICSD",
+    "CIF"
+  ]
+}
