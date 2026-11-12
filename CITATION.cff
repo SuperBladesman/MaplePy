@@ -29,13 +29,13 @@ preferred-citation:
   type: article
   status: submitted
   authors:
-    - family-names: Gross
-      given-names: Peter
-      affiliation: University of Sheffield
     - family-names: Reeves-McLaren
       given-names: Nik
       affiliation: University of Sheffield
       orcid: "https://orcid.org/0000-0002-1061-1230"
+    - family-names: Gross
+      given-names: Peter
+      affiliation: University of Sheffield
   title: "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides"
   journal: "Journal of Applied Crystallography"
   year: 2026

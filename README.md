@@ -42,7 +42,7 @@ Run the three validation sections first. The GUI cell (Section 7) opens a Tk fil
 
 ## Hopper.ipynb (May 2026)
 
-Hopper reads `maple_summary.csv` and `maple_results.csv`, decomposes each structure into binary oxides using the per-site oxidation states, and reports the residual Δ = |MAPLE(ternary) − Σ MAPLE(binaries)| / MAPLE(ternary). Each structure is then classified: additive (Δ < 1%), or one of nine codes in three tiers (Tier 1, the decomposition is incomplete; Tier 2, the residual exists but an artefact bears on it; Tier 3, a genuine violation). The version used for the manuscript has twelve codes; the release will document the scheme in full.
+Hopper reads `maple_summary.csv` and `maple_results.csv`, decomposes each structure into binary oxides using the per-site oxidation states, and reports the residual Δ = |MAPLE(ternary) − Σ MAPLE(binaries)| / MAPLE(ternary). Each structure is then classified: additive (Δ < 1%), or one of six codes in three tiers, with three more numbered and reserved (Tier 1, the decomposition is incomplete; Tier 2, the residual exists but an artefact bears on it; Tier 3, a genuine violation). The version used for the manuscript has twelve codes; the release will document the scheme in full.
 
 ## The reference table
 
@@ -54,7 +54,7 @@ No ICSD CIF files are, or will be, distributed here.
 
 The manuscript describing the method and its application to 1,410 perovskite and pyrochlore structures is under review:
 
-> P. Gross and N. Reeves-McLaren, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *J. Appl. Cryst.*, under review.
+> N. Reeves-McLaren and P. Gross, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *J. Appl. Cryst.*, under review.
 
 `CITATION.cff` gives the same details in machine-readable form, and GitHub's "Cite this repository" reads it.
 
