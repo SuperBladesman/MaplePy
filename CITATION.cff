@@ -1,19 +1,28 @@
 cff-version: 1.2.0
-message: "If you use MaplePy or Hopper, please cite the paper below. A versioned release with its own DOI will follow."
-title: "MaplePy: MAPLE from crystallographic information files, with a test of Hoppe's additivity theorem"
+message: "If you use MaplePy or Hopper, please cite the paper below and name the release you used."
+title: "MaplePy: MAPLE from crystallographic information files, and Hoppe's additivity theorem tested at database scale"
 type: software
 authors:
   - family-names: Reeves-McLaren
     given-names: Nik
     affiliation: University of Sheffield
     orcid: "https://orcid.org/0000-0002-1061-1230"
+  # Pending Peter's agreement to the licence and to software authorship;
+  # his ORCID goes here when he sends it.
+  - family-names: Gross
+    given-names: Peter
+    affiliation: University of Sheffield
+version: 1.4.0
 abstract: >-
   MaplePy computes per-site and total MAPLE (Madelung Part of Lattice
-  Energy) values from CIF files with the Ewald summation in pymatgen.
-  Hopper decomposes ternary oxides into their binary oxides, computes the
-  residual of Hoppe's additivity theorem against a 112-entry binary oxide
-  reference table, and classifies each structure. This repository holds
-  the unversioned notebooks uploaded on 21st May 2026.
+  Energy) values from CIF files with the Ewald summation in pymatgen,
+  recording where each oxidation state came from, deriving Z from the site
+  multiplicities, treating disorder by mean-field charges, and flagging
+  geometry that cannot carry a Madelung energy. Hopper decomposes ternary
+  oxides into their binary oxides, computes the residual of Hoppe's
+  additivity theorem against a 112-entry reference table, and classifies
+  each structure into one of twelve codes in three tiers. This release is
+  maplepy 1.4.0, running MaplePy 1.3.6 and Hopper 1.2.9.
 license: MIT
 repository-code: "https://github.com/SuperBladesman/MaplePy"
 keywords:
