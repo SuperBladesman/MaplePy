@@ -7,14 +7,15 @@ import maplepy
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def run(*args, cwd=None):
+def run(*args, cwd=None, env=None):
     p = subprocess.run([sys.executable, '-c',
                         'import sys; from maplepy.cli import main_maplepy, '
                         'main_hopper; f = main_hopper if sys.argv[1] == '
                         '"hopper" else main_maplepy; '
                         'raise SystemExit(f(sys.argv[2:]))', *args],
                        capture_output=True, text=True, cwd=cwd,
-                       env={'MPLBACKEND': 'Agg', **__import__('os').environ})
+                       env={'MPLBACKEND': 'Agg', **__import__('os').environ,
+                            **(env or {})})
     return p.returncode, p.stdout + p.stderr
 
 
@@ -62,3 +63,11 @@ def test_bad_arguments():
     assert run('maplepy', '--ox', 'Ba2')[0] != 0
     assert run('maplepy', 'no/such/folder')[0] == 2
     assert run('maplepy')[0] == 2
+
+
+def test_a_console_that_cannot_write_unicode(examples):
+    # A Windows console redirected to a file encodes as cp1252, and the
+    # notebook prints check marks as it goes
+    code, out = run('maplepy', str(examples), '--workers', '1',
+                    env={'PYTHONIOENCODING': 'cp1252'})
+    assert code == 0, out
