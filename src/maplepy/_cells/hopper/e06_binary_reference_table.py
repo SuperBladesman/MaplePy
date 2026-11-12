@@ -264,16 +264,19 @@ print(f'  binary reference: {len(_json_lookup)} entries from {_binary_source}')
 # ── Which entries are estimates ────────────────────────────────────────
 #
 # v1.2.9: 23 of the 112 values are estimates, interpolated within a structure
-# type or set by hand, and none has a published or computed source. They are
+# type or set by hand, and none has a published or computed source; Cu2O's
+# recorded source, a MaplePy calculation at a = 4.270 A, gives 797.9 rather
+# than 730.0 and is marked unsourced in the JSON (sourced: false). They are
 # kept, so that results made with them can be reproduced, and every
 # decomposition that uses one says so (`estimated_binaries`). Nothing is
 # reclassified on that account: a residual resting on an estimate is a
 # residual against a weaker reference, and the reader is told which.
 def estimated_binaries(source_path):
-    """The formulae whose reference value is an estimate.
+    """The formulae whose reference value is an estimate, or unsourced.
 
-    From the released JSON's `source` field where the table was read from
-    it; from the inline labels where it was not.
+    From the released JSON's `source` and `sourced` fields where the table
+    was read from it (Cu2O is unsourced, not estimated);
+    from the inline labels where it was not.
     """
     import json as _json
     from pathlib import Path as _Path
@@ -281,13 +284,14 @@ def estimated_binaries(source_path):
     if _p.is_file():
         with open(_p, 'r', encoding='utf-8') as _f:
             return {e['formula'] for e in _json.load(_f)['entries']
-                    if e.get('source') == 'estimated'}
+                    if e.get('source') == 'estimated'
+                    or e.get('sourced') is False}
     return {f for f, (_v, _t, _s) in BINARY_MAPLE_FALLBACK.items()
             if _s.lower().startswith(('estimated', 'interpolated'))}
 
 
 ESTIMATED_BINARIES = estimated_binaries(_binary_source)
-print(f'  estimated, unsourced: {len(ESTIMATED_BINARIES)} entries')
+print(f'  estimated or unsourced: {len(ESTIMATED_BINARIES)} entries')
 print(f'  inline fallback:  {len(BINARY_MAPLE_FALLBACK)} entries, '
       f'{len(set(_json_lookup) - set(BINARY_MAPLE_FALLBACK))} of the released '
       f'entries not in it, no value in disagreement')

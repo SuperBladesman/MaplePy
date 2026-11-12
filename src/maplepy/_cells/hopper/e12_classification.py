@@ -11,14 +11,11 @@
 #   Tier 2 (2.x)     Calculation complete, result compromised
 #   Tier 3 (3.x)     Calculation complete, result trustworthy
 #
-# Priority: additive checked first, then codes applied in ascending
-# order (1.1 → 2.1 → 2.2 → 2.3 → 2.4 → 3.1).  A structure triggering
-# multiple flags receives the lowest applicable code.
-#
-# Future codes (reserved, no current data triggers them):
-#   1.2  Upstream MaplePy failure (CIF never reached Hopper)
-#   2.5  Wrong structure type (incorrect space group / structure type)
-#   2.6  Anion vacancy disorder (O vacancies distinct from cation disorder)
+# v1.2.9: the order as classify_additivity() applies it (this header had
+# kept the first version's): Tier 1 (1.1, 1.3, 1.4); the structural
+# defects, 2.7 then 2.5, whatever the residual; Additive; then 2.1, 2.6,
+# 2.3, 2.4; then 3.1. A caveat must not mask a defect. 1.2 and 2.2 are
+# defined and cannot arise from a MaplePy run (see the registry).
 
 # ── Classification registry ──────────────────────────────────────────────
 # Central definition of all codes.  Add new codes here; the classifier
@@ -337,14 +334,10 @@ v1.1: the counts that used to sit here have been removed. They disagreed
 with the registry and with the manuscript, and the notebook reports the
 population it finds.
 
-Usage in the Hopper classification cell:
-    
-    wyckoff_error = detect_wyckoff_site_error(
-        row['source_cif'], results_df, summary_df
-    )
-    if wyckoff_error:
-        code = '2.5'
-        label = 'Wyckoff site mis-assignment (B at 4a instead of 4b)'
+v1.2.9: the usage example that stood here named a function that does not
+exist. The detector is detect_structural_coordinate_error(), below, and
+classify_additivity() calls it; since v1.2.2, code 2.5 also takes a
+short contact from MaplePy's geometry_flag.
 """
 
 
@@ -512,9 +505,10 @@ def classify_additivity(df_add, results_df, summary_df,
 
     Notes
     -----
-    Priority order follows ascending code number.  A structure that
-    could trigger both 2.1 and 2.3 receives 2.1 (the lower code).
-    Additive status is checked first: delta < threshold -> additive, stop.
+    v1.2.9: the order is the one in the header of this cell, not
+    ascending code number: Tier 1; then 2.7 and 2.5 whatever the
+    residual; then Additive; then 2.1, 2.6, 2.3, 2.4; then 3.1. The
+    first that applies is assigned.
     """
     df = df_add.copy()
     # v1.2.4: two indexes, built once, for every lookup below.

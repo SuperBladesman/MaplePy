@@ -181,7 +181,8 @@ def batch_maple(cif_dir, output_dir=None, oxidation_states_map=None,
     cif_dir : str or Path
         Directory containing CIF files.
     output_dir : str or Path, optional
-        Directory for output CSVs. If None, creates 'outputs' inside cif_dir.
+        Directory for output CSVs. If None, creates a timestamped
+        outputs_YYYYMMDD_HHMMSS folder inside cif_dir.
     oxidation_states_map : dict  {filename_stem: {element: oxi_state}}
         For CIFs without embedded oxidation states.
     data_dir : str or None

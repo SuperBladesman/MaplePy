@@ -1,6 +1,6 @@
 # Contributing to MaplePy
 
-MaplePy and Hopper are maintained by Nik Reeves-McLaren at the University of Sheffield, as well as research and teaching. Issues and pull requests are read and answered as time allows; there is no guaranteed response time.
+MaplePy and Hopper are maintained by Nik Reeves-McLaren at the University of Sheffield, alongside his research and teaching. Issues and pull requests are read and answered as time allows; there is no guaranteed response time.
 
 ## Reporting a structure MaplePy or Hopper gets wrong
 
@@ -21,7 +21,7 @@ Questions about what a code means are welcome as issues too; the README's table 
 2. For MaplePy, run Section 2 in the notebook: all three validations must pass.
 3. Copy the cells into the package: `python tools/build_engine.py`.
 4. Install and test under pandas 2 and pandas 3: `pip install -e ".[test]"`, then `maplepy --validate` and `python -m pytest`.
-5. Show that the notebooks and the package still agree on a folder of CIFs you know: `python tools/equivalence.py FOLDER`.
+5. Show that the notebooks and the package still agree on a folder of CIFs you know: `pip install nbclient ipykernel`, then `python tools/equivalence.py FOLDER`.
 6. Describe the change in `CHANGELOG.md`, under the new version: what was wrong, what changed, and what it does to results.
 
 A change to a reference value needs a source, named in [data/README.md](data/README.md), and the tests check that Hopper's inline table and the JSON still agree.

@@ -2,7 +2,7 @@
 
 # MaplePy.ipynb
 MAPLEPY_VERSION = '1.3.6'
-MAPLEPY_NOTEBOOK_SHA256 = '71251ae1573840431a4e8724f5f9b8fb5f862356540dc1adf21ac3100b5c287f'
+MAPLEPY_NOTEBOOK_SHA256 = '98afc23b5e31e15d30a22de35f6cdcfb1852df5ccd16b4e4c588bd4262a3551d'
 
 # Loaded, in this order, into one namespace when the engine starts.
 MAPLEPY_ENGINE_CELLS = [
@@ -53,7 +53,7 @@ MAPLEPY_NOTEBOOK_ORDER = [
 
 # Hopper.ipynb
 HOPPER_VERSION = '1.2.9'
-HOPPER_NOTEBOOK_SHA256 = '55dd5ae1adf34397a38e6d2d6de339253825daadd6e021eed45f9469ef37fab8'
+HOPPER_NOTEBOOK_SHA256 = '88c77bd38adeb1f9c48c0ff02ea67d95b8e28df5822add75f20d1fa6b7e2d007'
 
 # Loaded, in this order, into one namespace when the engine starts.
 HOPPER_ENGINE_CELLS = [
