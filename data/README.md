@@ -18,7 +18,7 @@ Each entry gives the formula, the value, the structure type and space group, and
 
 `confidence` is `high` for a median over 10 or more entries, `medium` for 2 to 9 entries or a validation value, and `low` for an estimate or an entry flagged for re-deriving (`review_note`).
 
-The table holds derived statistics only: no coordinates, and no content of any CIF. Eight of the 112 entries are molecular or non-metal oxides (SO<sub>3</sub>, P<sub>2</sub>O<sub>5</sub>, B<sub>2</sub>O<sub>3</sub>, As<sub>2</sub>O<sub>5</sub>, Sb<sub>2</sub>O<sub>3</sub>, SeO<sub>3</sub>, Cl<sub>2</sub>O<sub>7</sub>, H<sub>2</sub>O), added for work beyond perovskites and pyrochlores; Hopper's inline fallback table holds the other 104, and the notebook stops if a value ever differs between the two.
+The table contains derived statistics only: no coordinates, and no content of any CIF. Eight of the 112 entries are molecular or non-metal oxides (SO<sub>3</sub>, P<sub>2</sub>O<sub>5</sub>, B<sub>2</sub>O<sub>3</sub>, As<sub>2</sub>O<sub>5</sub>, Sb<sub>2</sub>O<sub>3</sub>, SeO<sub>3</sub>, Cl<sub>2</sub>O<sub>7</sub>, H<sub>2</sub>O), added for work beyond perovskites and pyrochlores; Hopper's inline fallback table has the other 104, and the notebook stops if a value ever differs between the two.
 
 ### Versions
 

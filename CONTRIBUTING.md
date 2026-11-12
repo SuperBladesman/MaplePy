@@ -1,6 +1,6 @@
 # Contributing to MaplePy
 
-MaplePy and Hopper are maintained by Nik Reeves-McLaren at the University of Sheffield, alongside research and teaching. Issues and pull requests are read and answered as time allows; there is no guaranteed response time.
+MaplePy and Hopper are maintained by Nik Reeves-McLaren at the University of Sheffield, as well as research and teaching. Issues and pull requests are read and answered as time allows; there is no guaranteed response time.
 
 ## Reporting a structure MaplePy or Hopper gets wrong
 

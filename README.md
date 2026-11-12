@@ -137,7 +137,7 @@ Hopper also writes the perovskite (*Pnma*) and pyrochlore (*Fd*3̄*m*) subsets, 
 
 ## The binary oxide reference table
 
-[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) holds 112 binary oxides. 88 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range; 23 are estimates, interpolated within a structure type or set by hand, with no published or computed source (`"sourced": false`); 1 comes from a MaplePy validation structure. The table holds derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. Two entries (CuO, ZnO) rest on high-pressure rock-salt phases and carry a note saying they need re-deriving. [data/README.md](data/README.md) describes the three data files.
+[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) contains 112 binary oxides. 88 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range; 23 are estimates, interpolated within a structure type or set by hand, with no published or computed source (`"sourced": false`); 1 comes from a MaplePy validation structure. The table contains derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. Two entries (CuO, ZnO) rest on high-pressure rock-salt phases and carry a note saying they need re-deriving. [data/README.md](data/README.md) describes the three data files.
 
 ## Limitations
 
