@@ -13,6 +13,17 @@ import sys
 from pathlib import Path
 
 
+def _utf8_output():
+    """The notebooks print ✓ and ✗ as they go. A Windows console
+    redirected to a file or a pipe encodes as cp1252, which cannot write
+    them, so the run would stop on its first progress line. Write UTF-8."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except (AttributeError, ValueError):     # pragma: no cover
+            pass
+
+
 def _versions():
     from . import HOPPER_VERSION, MAPLEPY_VERSION, __version__
     try:
@@ -40,6 +51,7 @@ def _parse_ox(text):
 
 
 def main_maplepy(argv=None):
+    _utf8_output()
     ap = argparse.ArgumentParser(
         prog='maplepy',
         description='MAPLE (Madelung Part of Lattice Energy) from CIF files. '
@@ -134,6 +146,7 @@ def main_maplepy(argv=None):
 
 
 def main_hopper(argv=None):
+    _utf8_output()
     ap = argparse.ArgumentParser(
         prog='hopper',
         description="Hoppe's additivity theorem on a MaplePy run: "
