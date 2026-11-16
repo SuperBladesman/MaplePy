@@ -1,0 +1,61 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  MPLBACKEND: Agg
+
+jobs:
+  engine:
+    name: package cells match the notebooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python tools/build_engine.py --check
+
+  test:
+    name: py${{ matrix.python }} / pandas ${{ matrix.pandas }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.11", "3.12", "3.13"]
+        pandas: ["2", "3"]
+        include:
+          - os: windows-latest
+            python: "3.13"
+            pandas: "3"
+          - os: macos-latest
+            python: "3.13"
+            pandas: "3"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install the package as a user would, with the pandas under test
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          if [ "${{ matrix.pandas }}" = "2" ]; then PANDAS="pandas>=2.0,<3"; else PANDAS="pandas>=3"; fi
+          python -m pip install "$PANDAS" ".[test]"
+          python -c "import pandas, maplepy; print('pandas', pandas.__version__, '| maplepy', maplepy.__version__, '| MaplePy', maplepy.MAPLEPY_VERSION, '| Hopper', maplepy.HOPPER_VERSION)"
+      - name: Known answers
+        run: maplepy --validate
+      - name: Test suite
+        run: python -m pytest -q
+      - name: Command lines, end to end
+        shell: bash
+        run: |
+          mkdir run && cp examples/*.cif run/
+          maplepy run --workers 1 --plots
+          hopper run --figures
+          test -s run/outputs_*/additivity_classified.csv
+          maplepy examples/SrFeO3_no_states.cif --ox Sr=2,Fe=4,O=-2

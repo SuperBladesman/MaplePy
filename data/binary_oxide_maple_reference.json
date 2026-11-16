@@ -2,7 +2,7 @@
   "_metadata": {
     "title": "Binary Oxide MAPLE Reference Table",
     "description": "Reference MAPLE (Madelung Part of Lattice Energy) values for binary oxides, for use with Hoppe's additivity theorem. Values are in kcal/mol per formula unit.",
-    "version": "1.0.0",
+    "version": "1.3.0",
     "authors": [
       "Peter Gross",
       "Nik Reeves-McLaren"
@@ -15,17 +15,19 @@
     },
     "methodology": {
       "icsd_calibrated": "Median MAPLE across qualifying ICSD entries at ambient conditions (273-303 K, <0.15 MPa). High-pressure entries, zero-MAPLE entries, and non-stoichiometric compositions excluded.",
-      "validation": "Values from MaplePy benchmark calculations (NaCl, TiO2, BaTiO3).",
-      "estimated": "Interpolated from chemical trends within structure type families (e.g., lanthanide contraction in bixbyite RE2O3 series). These carry additional uncertainty and should be updated when ICSD data become available."
+      "validation": "Recorded as a MaplePy validation calculation. The one entry so marked, Cu2O, does not reproduce (MaplePy gives 797.9 kcal/mol at a = 4.270 A) and is marked sourced: false.",
+      "estimated": "Interpolated from chemical trends within structure type families (e.g., lanthanide contraction in bixbyite RE2O3 series), or set by hand. These have no published or computed source (sourced: false), carry additional uncertainty, and should be replaced when a source becomes available. Hopper 1.2.9 and later report every decomposition that uses one."
     },
     "source_classifications": {
-      "icsd_median": "Calibrated from ICSD median (61% of entries, 65 of 107)",
-      "validation": "From MaplePy validation structures (5% of entries, 5 of 107)",
-      "estimated": "Interpolated or estimated (35% of entries, 37 of 107)"
+      "icsd_median": "Calibrated from ICSD median (93 of 109, 85%)",
+      "estimated": "Estimated, with no ICSD calibration (15 of 109, 14%): Ni2O3 and Co2O3 are isostructural corundum estimates with a stated uncertainty; the other 13 were set by hand and enter no decomposition reported in the associated paper",
+      "validation": "From a MaplePy validation structure (1 of 109); does not reproduce, so unsourced"
     },
-    "n_entries": 112,
+    "n_entries": 109,
     "licence": "CC-BY-4.0",
-    "citation": "Gross, P.; Reeves-McLaren, N. Angew. Chem. Int. Ed., 2026 (submitted)"
+    "citation": "Reeves-McLaren, N.; Gross, P. Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides. J. Appl. Cryst., under review (2026).",
+    "metadata_note": "v1.3.0 (ui5052 revision): Bi2O3, PbO, HgO, TcO2 and Tl2O calibrated from ambient ICSD entries; Ni2O3 re-estimated and Co2O3 added by isostructural scaling of six calibrated corundum sesquioxides by the ratio of cation-oxygen radius sums, using Shannon radii for low-spin Ni3+ (0.56 A) and Co3+ (0.545 A); Bi2O5, Ru2O5, RuO3 and Re2O5 removed because no ambient binary oxide of those oxidation states exists. n_entries and source_classifications are computed from the entries list. Earlier history: v1.1.1 added the sourced flag and review notes; values were unchanged from v1.0.0 to v1.1.1.",
+    "ui5052_R1_rev2": "Bi2O3, PbO, HgO, TcO2 and Tl2O calibrated from ambient ICSD entries (medians). Bi2O5, Ru2O5, RuO3 and Re2O5 removed: no ambient binary oxide of Bi(V), Ru(V), Ru(VI) or Re(V) exists, so structures that need one are classified 1.3, as Os2O5, Tc2O5 and Ir2O5 already were."
   },
   "_field_descriptions": {
     "formula": "Reduced chemical formula of the binary oxide",
@@ -35,7 +37,9 @@
     "n_icsd_entries": "Number of qualifying ICSD entries used for the median (null if estimated)",
     "icsd_range_min": "Minimum MAPLE across qualifying ICSD entries (null if estimated)",
     "icsd_range_max": "Maximum MAPLE across qualifying ICSD entries (null if estimated)",
-    "confidence": "high = ICSD median from >= 10 entries; medium = ICSD median from 2-9 entries or validation; low = estimated/interpolated"
+    "confidence": "high = ICSD median from >= 10 entries; medium = ICSD median from 2-9 entries; low = estimated, a single entry, or a source that does not reproduce",
+    "sourced": "false where the value has no published or computed source, or where its recorded source does not reproduce",
+    "review_note": "Present where the entry needs re-deriving; states why"
   },
   "entries": [
     {
@@ -46,7 +50,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Al2O3",
@@ -56,7 +61,8 @@
       "n_icsd_entries": 68,
       "icsd_range_min": 4250,
       "icsd_range_max": 4369,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "AmO2",
@@ -66,7 +72,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 2867,
       "icsd_range_max": 2876,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "As2O5",
@@ -76,7 +83,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 9681,
       "icsd_range_max": 9685,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "B2O3",
@@ -86,7 +94,8 @@
       "n_icsd_entries": 10,
       "icsd_range_min": 4931,
       "icsd_range_max": 5256,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "BaO",
@@ -96,27 +105,20 @@
       "n_icsd_entries": 4,
       "icsd_range_min": 838,
       "icsd_range_max": 842,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Bi2O3",
-      "maple_kcal_mol": 2580.0,
-      "structure_type": "Monoclinic P2_1/c",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
-    },
-    {
-      "formula": "Bi2O5",
-      "maple_kcal_mol": 4300.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "maple_kcal_mol": 3471.8,
+      "structure_type": "alpha-Bi2O3 P2_1/c",
+      "source": "icsd_median",
+      "n_icsd_entries": 17,
+      "icsd_range_min": 3310.5,
+      "icsd_range_max": 3516.3,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 17 ambient ICSD entries (15072, 94229, 118220, 118221, 260800, 2374, 15752, 47620, 178328, 179975, 179979, 179982, 179993, 182611, 182748, 182995, 183274), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "CaO",
@@ -126,7 +128,8 @@
       "n_icsd_entries": 15,
       "icsd_range_min": 964,
       "icsd_range_max": 972,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "CdO",
@@ -136,7 +139,8 @@
       "n_icsd_entries": 14,
       "icsd_range_min": 982,
       "icsd_range_max": 992,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Ce2O3",
@@ -146,7 +150,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "CeO2",
@@ -156,7 +161,8 @@
       "n_icsd_entries": 64,
       "icsd_range_min": 2796,
       "icsd_range_max": 2891,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Cl2O7",
@@ -166,7 +172,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "CmO2",
@@ -176,7 +183,22 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 2877,
       "icsd_range_max": 2882,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
+    },
+    {
+      "formula": "Co2O3",
+      "maple_kcal_mol": 4325.6,
+      "structure_type": "Corundum R-3c (hypothetical)",
+      "source": "estimated",
+      "n_icsd_entries": null,
+      "icsd_range_min": null,
+      "icsd_range_max": null,
+      "confidence": "medium",
+      "sourced": true,
+      "method": "isostructural_scaling",
+      "uncertainty_kcal_mol": 16.9,
+      "review_note": "Isostructural estimate (ui5052 R1): six calibrated corundum M2O3 (Al, Cr, Fe, Ga, V, Ti) scaled to low-spin Co3+ (Shannon r = 0.545 A); mean 4325.6, SD 16.9. No ambient Co2O3 exists; replaces the Co3O4 stand-in for Co3+."
     },
     {
       "formula": "Co3O4",
@@ -186,7 +208,8 @@
       "n_icsd_entries": 26,
       "icsd_range_min": 5020,
       "icsd_range_max": 5508,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "CoO",
@@ -196,7 +219,8 @@
       "n_icsd_entries": 22,
       "icsd_range_min": 1086,
       "icsd_range_max": 1100,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Cr2O3",
@@ -206,7 +230,8 @@
       "n_icsd_entries": 21,
       "icsd_range_min": 4159,
       "icsd_range_max": 4190,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "CrO2",
@@ -216,7 +241,8 @@
       "n_icsd_entries": 14,
       "icsd_range_min": 3346,
       "icsd_range_max": 3424,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "CrO3",
@@ -226,7 +252,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Cs2O",
@@ -236,7 +263,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Cu2O",
@@ -246,7 +274,9 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "low",
+      "sourced": false,
+      "review_note": "Recorded as a MaplePy validation value, but MaplePy gives 797.9 kcal/mol for cuprite at a = 4.270 A (Cu-O 1.849 A), not 730.0. The value is kept so that results can be reproduced; it needs re-deriving from ambient ICSD entries."
     },
     {
       "formula": "CuO",
@@ -256,7 +286,9 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "low",
+      "sourced": true,
+      "review_note": "The ambient phase of CuO is tenorite (C2/c), not rock salt, and this value rests on a single ICSD entry of a high-pressure rock-salt phase. Needs re-deriving."
     },
     {
       "formula": "Dy2O3",
@@ -266,7 +298,8 @@
       "n_icsd_entries": 10,
       "icsd_range_min": 3624,
       "icsd_range_max": 3646,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Er2O3",
@@ -276,7 +309,8 @@
       "n_icsd_entries": 10,
       "icsd_range_min": 3655,
       "icsd_range_max": 3689,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Eu2O3",
@@ -286,7 +320,8 @@
       "n_icsd_entries": 6,
       "icsd_range_min": 3559,
       "icsd_range_max": 3630,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "EuO",
@@ -296,7 +331,8 @@
       "n_icsd_entries": 9,
       "icsd_range_min": 901,
       "icsd_range_max": 904,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Fe2O3",
@@ -306,7 +342,8 @@
       "n_icsd_entries": 53,
       "icsd_range_min": 4074,
       "icsd_range_max": 4207,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "FeO",
@@ -316,7 +353,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 1073,
       "icsd_range_max": 1082,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Ga2O3",
@@ -326,7 +364,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 4181,
       "icsd_range_max": 4198,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Gd2O3",
@@ -336,7 +375,8 @@
       "n_icsd_entries": 14,
       "icsd_range_min": 3573,
       "icsd_range_max": 3611,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "GeO2",
@@ -346,7 +386,8 @@
       "n_icsd_entries": 8,
       "icsd_range_min": 3386,
       "icsd_range_max": 3425,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "H2O",
@@ -356,7 +397,8 @@
       "n_icsd_entries": 32,
       "icsd_range_min": 256,
       "icsd_range_max": 1379,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "HfO2",
@@ -366,17 +408,20 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 3016,
       "icsd_range_max": 3053,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "HgO",
-      "maple_kcal_mol": 850.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "maple_kcal_mol": 967.0,
+      "structure_type": "Montroydite Pnma",
+      "source": "icsd_median",
+      "n_icsd_entries": 3,
+      "icsd_range_min": 962.9,
+      "icsd_range_max": 968.2,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 3 ambient ICSD entries (14124, 15890, 40316), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "Ho2O3",
@@ -386,7 +431,8 @@
       "n_icsd_entries": 9,
       "icsd_range_min": 3641,
       "icsd_range_max": 3655,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "In2O3",
@@ -396,7 +442,8 @@
       "n_icsd_entries": 18,
       "icsd_range_min": 3793,
       "icsd_range_max": 3849,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "IrO2",
@@ -406,7 +453,8 @@
       "n_icsd_entries": 8,
       "icsd_range_min": 3221,
       "icsd_range_max": 3235,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "K2O",
@@ -416,7 +464,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 599,
       "icsd_range_max": 600,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "La2O3",
@@ -426,7 +475,8 @@
       "n_icsd_entries": 11,
       "icsd_range_min": 3337,
       "icsd_range_max": 3436,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Li2O",
@@ -436,7 +486,8 @@
       "n_icsd_entries": 10,
       "icsd_range_min": 835,
       "icsd_range_max": 838,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Lu2O3",
@@ -446,7 +497,8 @@
       "n_icsd_entries": 12,
       "icsd_range_min": 3703,
       "icsd_range_max": 3735,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "MgO",
@@ -456,7 +508,8 @@
       "n_icsd_entries": 34,
       "icsd_range_min": 1092,
       "icsd_range_max": 1106,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Mn2O3",
@@ -466,7 +519,8 @@
       "n_icsd_entries": 10,
       "icsd_range_min": 4087,
       "icsd_range_max": 4155,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "MnO",
@@ -476,7 +530,8 @@
       "n_icsd_entries": 13,
       "icsd_range_min": 1036,
       "icsd_range_max": 1053,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "MnO2",
@@ -486,7 +541,8 @@
       "n_icsd_entries": 19,
       "icsd_range_min": 3332,
       "icsd_range_max": 3388,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Mo2O3",
@@ -496,7 +552,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "MoO2",
@@ -506,7 +563,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 3179,
       "icsd_range_max": 3180,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "MoO3",
@@ -516,7 +574,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Na2O",
@@ -526,7 +585,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 694,
       "icsd_range_max": 695,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Nb2O5",
@@ -536,7 +596,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 8984,
       "icsd_range_max": 8992,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "NbO2",
@@ -546,7 +607,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 3120,
       "icsd_range_max": 3154,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Nd2O3",
@@ -556,17 +618,22 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 3495,
       "icsd_range_max": 3507,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Ni2O3",
-      "maple_kcal_mol": 4100.0,
-      "structure_type": "Estimated",
+      "maple_kcal_mol": 4292.5,
+      "structure_type": "Corundum R-3c (hypothetical)",
       "source": "estimated",
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "medium",
+      "sourced": true,
+      "method": "isostructural_scaling",
+      "uncertainty_kcal_mol": 16.8,
+      "review_note": "Isostructural estimate (ui5052 R1): six calibrated corundum M2O3 (Al, Cr, Fe, Ga, V, Ti) scaled to low-spin Ni3+ (Shannon r = 0.56 A); mean 4292.5, SD 16.8. Replaces 4100.0 (interpolated by atomic number, Ti-V-Cr-Fe)."
     },
     {
       "formula": "NiO",
@@ -576,7 +643,8 @@
       "n_icsd_entries": 30,
       "icsd_range_min": 1052,
       "icsd_range_max": 1119,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "NpO2",
@@ -586,7 +654,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 2843,
       "icsd_range_max": 2844,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "OsO2",
@@ -596,7 +665,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 3205,
       "icsd_range_max": 3215,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "OsO3",
@@ -606,7 +676,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "P2O5",
@@ -616,17 +687,20 @@
       "n_icsd_entries": 8,
       "icsd_range_min": 10123,
       "icsd_range_max": 10489,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "PbO",
-      "maple_kcal_mol": 810.0,
-      "structure_type": "Litharge",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "maple_kcal_mol": 868.5,
+      "structure_type": "Litharge P4/nmm",
+      "source": "icsd_median",
+      "n_icsd_entries": 10,
+      "icsd_range_min": 859.8,
+      "icsd_range_max": 872.8,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 10 ambient ICSD entries (15466, 26596, 53927, 62842, 64778, 64799, 197689, 198372, 600296, 647266), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "PbO2",
@@ -636,7 +710,8 @@
       "n_icsd_entries": 11,
       "icsd_range_min": 2946,
       "icsd_range_max": 2959,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Pd2O",
@@ -646,7 +721,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "PdO2",
@@ -656,7 +732,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Pm2O3",
@@ -666,7 +743,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Pr2O3",
@@ -676,7 +754,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 3476,
       "icsd_range_max": 3476,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "PrO2",
@@ -686,7 +765,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 2861,
       "icsd_range_max": 2872,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "PtO2",
@@ -696,7 +776,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "PuO2",
@@ -706,7 +787,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 2863,
       "icsd_range_max": 2864,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Rb2O",
@@ -716,17 +798,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 572,
       "icsd_range_max": 573,
-      "confidence": "medium"
-    },
-    {
-      "formula": "Re2O5",
-      "maple_kcal_mol": 4400.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Re2O7",
@@ -736,7 +809,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "ReO2",
@@ -746,7 +820,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "ReO3",
@@ -756,7 +831,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Rh2O3",
@@ -766,7 +842,8 @@
       "n_icsd_entries": 4,
       "icsd_range_min": 4024,
       "icsd_range_max": 4087,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "RhO2",
@@ -776,17 +853,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 3261,
       "icsd_range_max": 3268,
-      "confidence": "medium"
-    },
-    {
-      "formula": "Ru2O5",
-      "maple_kcal_mol": 4250.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "RuO2",
@@ -796,17 +864,8 @@
       "n_icsd_entries": 17,
       "icsd_range_min": 3228,
       "icsd_range_max": 3252,
-      "confidence": "high"
-    },
-    {
-      "formula": "RuO3",
-      "maple_kcal_mol": 4500.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "SO3",
@@ -816,7 +875,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 6992,
       "icsd_range_max": 7156,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Sb2O3",
@@ -826,7 +886,8 @@
       "n_icsd_entries": 14,
       "icsd_range_min": 3186,
       "icsd_range_max": 3730,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Sb2O5",
@@ -836,7 +897,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 8955,
       "icsd_range_max": 8956,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "SbO2",
@@ -846,7 +908,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Sc2O3",
@@ -856,7 +919,8 @@
       "n_icsd_entries": 8,
       "icsd_range_min": 3927,
       "icsd_range_max": 3966,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "SeO3",
@@ -866,7 +930,8 @@
       "n_icsd_entries": 3,
       "icsd_range_min": 6308,
       "icsd_range_max": 6367,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "SiO2",
@@ -876,7 +941,8 @@
       "n_icsd_entries": 42,
       "icsd_range_min": 3575,
       "icsd_range_max": 3664,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Sm2O3",
@@ -886,7 +952,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 3541,
       "icsd_range_max": 3558,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "SnO2",
@@ -896,7 +963,8 @@
       "n_icsd_entries": 48,
       "icsd_range_min": 3071,
       "icsd_range_max": 3156,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "SrO",
@@ -906,7 +974,8 @@
       "n_icsd_entries": 11,
       "icsd_range_min": 898,
       "icsd_range_max": 906,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Ta2O5",
@@ -916,7 +985,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "TaO2",
@@ -926,7 +996,8 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 3130,
       "icsd_range_max": 3162,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Tb2O3",
@@ -936,7 +1007,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 3592,
       "icsd_range_max": 3625,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "TbO2",
@@ -946,7 +1018,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Tc2O7",
@@ -956,17 +1029,20 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "TcO2",
-      "maple_kcal_mol": 3250.0,
-      "structure_type": "Rutile P4_2/mnm",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "maple_kcal_mol": 3191.2,
+      "structure_type": "MoO2-type P2_1/c",
+      "source": "icsd_median",
+      "n_icsd_entries": 2,
+      "icsd_range_min": 3175.9,
+      "icsd_range_max": 3206.5,
+      "confidence": "medium",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 2 ambient ICSD entries (254200, 647511), MaplePy 1.3.6; 173151 excluded as a non-stoichiometric refinement. Median replaces the earlier hand-set value of 3250.0."
     },
     {
       "formula": "ThO2",
@@ -976,7 +1052,8 @@
       "n_icsd_entries": 15,
       "icsd_range_min": 2758,
       "icsd_range_max": 2770,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Ti2O3",
@@ -986,7 +1063,8 @@
       "n_icsd_entries": 12,
       "icsd_range_min": 4031,
       "icsd_range_max": 4066,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "TiO",
@@ -996,7 +1074,8 @@
       "n_icsd_entries": 8,
       "icsd_range_min": 1081,
       "icsd_range_max": 1113,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "TiO2",
@@ -1006,17 +1085,20 @@
       "n_icsd_entries": 112,
       "icsd_range_min": 3218,
       "icsd_range_max": 3505,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Tl2O",
-      "maple_kcal_mol": 650.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low"
+      "maple_kcal_mol": 562.0,
+      "structure_type": "anti-CdCl2 R-3m (and C2/m description)",
+      "source": "icsd_median",
+      "n_icsd_entries": 2,
+      "icsd_range_min": 561.4,
+      "icsd_range_max": 562.7,
+      "confidence": "medium",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 2 ambient ICSD entries (16220, 77699), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "Tl2O3",
@@ -1026,7 +1108,8 @@
       "n_icsd_entries": 4,
       "icsd_range_min": 3663,
       "icsd_range_max": 3700,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "Tm2O3",
@@ -1036,7 +1119,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 3691,
       "icsd_range_max": 3710,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "UO2",
@@ -1046,7 +1130,8 @@
       "n_icsd_entries": 25,
       "icsd_range_min": 2821,
       "icsd_range_max": 2854,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "V2O3",
@@ -1056,7 +1141,8 @@
       "n_icsd_entries": 14,
       "icsd_range_min": 4119,
       "icsd_range_max": 4924,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "V2O5",
@@ -1066,7 +1152,8 @@
       "n_icsd_entries": 17,
       "icsd_range_min": 9393,
       "icsd_range_max": 9638,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "VO",
@@ -1076,7 +1163,8 @@
       "n_icsd_entries": 9,
       "icsd_range_min": 1127,
       "icsd_range_max": 1143,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "VO2",
@@ -1086,7 +1174,8 @@
       "n_icsd_entries": 5,
       "icsd_range_min": 3284,
       "icsd_range_max": 3317,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "W2O5",
@@ -1096,7 +1185,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "WO2",
@@ -1106,7 +1196,8 @@
       "n_icsd_entries": 1,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "medium"
+      "confidence": "medium",
+      "sourced": true
     },
     {
       "formula": "WO3",
@@ -1116,7 +1207,8 @@
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low"
+      "confidence": "low",
+      "sourced": false
     },
     {
       "formula": "Y2O3",
@@ -1126,7 +1218,8 @@
       "n_icsd_entries": 38,
       "icsd_range_min": 3585,
       "icsd_range_max": 4179,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "Yb2O3",
@@ -1136,7 +1229,8 @@
       "n_icsd_entries": 17,
       "icsd_range_min": 3707,
       "icsd_range_max": 3724,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     },
     {
       "formula": "ZnO",
@@ -1146,7 +1240,9 @@
       "n_icsd_entries": 2,
       "icsd_range_min": 1085,
       "icsd_range_max": 1087,
-      "confidence": "medium"
+      "confidence": "low",
+      "sourced": true,
+      "review_note": "The ambient phase of ZnO is wurtzite (P6_3mc); the rock-salt phase is high pressure, which this table's methodology excludes. The structure type and the value both need re-deriving from ambient entries."
     },
     {
       "formula": "ZrO2",
@@ -1156,7 +1252,8 @@
       "n_icsd_entries": 12,
       "icsd_range_min": 3001,
       "icsd_range_max": 3176,
-      "confidence": "high"
+      "confidence": "high",
+      "sourced": true
     }
   ]
 }

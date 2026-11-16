@@ -1,0 +1,236 @@
+{
+  "_metadata": {
+    "description": "MaplePy reference library: oxidation state overrides, Hoppe reference MAPLE values, and isostructural series constants.",
+    "version": "1.0.1",
+    "created": "2026-03-20",
+    "author": "Reeves-McLaren, N.",
+    "notes": [
+      "oxidation_state_overrides: formula-keyed assignments for stoichiometrically unambiguous compounds whose elements have multiple entries in common_oxidation_states.json. Level 4 of the oxidation state chain in MaplePy 1.3.6 (after the user's states and the CIF's own, before the single-state fallback). Keys use pymatgen reduced_formula convention (no spaces).",
+      "reference_maple: Hoppe reference values for binary and selected ternary compounds, for checking computed values. Sources cited per entry.",
+      "isostructural_series: MAPLE x d_ref constants (kcal/mol.Ang) for well-characterised isostructural families. Constant within a structure type for all members; deviations flag topological errors or anomalous bonding.",
+      "mixed_valence_compounds: formulas explicitly excluded from oxidation_state_overrides because they contain sites with more than one oxidation state. Listed here to document the deliberate exclusion.",
+      "v1.0.1: the notes describe MaplePy 1.3.6; one series note removed. No override or value has changed."
+    ]
+  },
+
+  "oxidation_state_overrides": {
+
+    "_note": "Keys: pymatgen reduced_formula. Values: {element: formal_charge}. Only compounds where charge balance uniquely determines all oxidation states. Compounds with mixed-valence or ambiguous anion states are excluded and listed in mixed_valence_compounds.",
+
+    "MoO2":   {"Mo":  4, "O": -2},
+    "MoO3":   {"Mo":  6, "O": -2},
+    "Mo2O3":  {"Mo":  3, "O": -2},
+    "Mo2O5":  {"Mo":  5, "O": -2},
+    "MoS2":   {"Mo":  4, "S": -2},
+
+    "VO":     {"V":   2, "O": -2},
+    "V2O3":   {"V":   3, "O": -2},
+    "VO2":    {"V":   4, "O": -2},
+    "V2O5":   {"V":   5, "O": -2},
+
+    "Cr2O3":  {"Cr":  3, "O": -2},
+    "CrO2":   {"Cr":  4, "O": -2},
+    "CrO3":   {"Cr":  6, "O": -2},
+    "CrF2":   {"Cr":  2, "F": -1},
+    "CrF3":   {"Cr":  3, "F": -1},
+
+    "FeO":    {"Fe":  2, "O": -2},
+    "Fe2O3":  {"Fe":  3, "O": -2},
+    "FeS":    {"Fe":  2, "S": -2},
+    "FeS2":   {"Fe":  2, "S": -1},
+    "Fe2S3":  {"Fe":  3, "S": -2},
+    "FeSe":   {"Fe":  2, "Se": -2},
+    "FeF2":   {"Fe":  2, "F": -1},
+    "FeF3":   {"Fe":  3, "F": -1},
+    "FeCl2":  {"Fe":  2, "Cl": -1},
+    "FeCl3":  {"Fe":  3, "Cl": -1},
+    "FeI2":   {"Fe":  2, "I": -1},
+
+    "MnO":    {"Mn":  2, "O": -2},
+    "Mn2O3":  {"Mn":  3, "O": -2},
+    "MnO2":   {"Mn":  4, "O": -2},
+    "MnS":    {"Mn":  2, "S": -2},
+    "MnSe":   {"Mn":  2, "Se": -2},
+    "MnTe":   {"Mn":  2, "Te": -2},
+    "MnF2":   {"Mn":  2, "F": -1},
+    "MnF3":   {"Mn":  3, "F": -1},
+    "MnCl2":  {"Mn":  2, "Cl": -1},
+
+    "CoO":    {"Co":  2, "O": -2},
+    "Co2O3":  {"Co":  3, "O": -2},
+    "CoS":    {"Co":  2, "S": -2},
+    "CoSe":   {"Co":  2, "Se": -2},
+    "CoF2":   {"Co":  2, "F": -1},
+    "CoF3":   {"Co":  3, "F": -1},
+    "CoCl2":  {"Co":  2, "Cl": -1},
+
+    "NiO":    {"Ni":  2, "O": -2},
+    "Ni2O3":  {"Ni":  3, "O": -2},
+    "NiS":    {"Ni":  2, "S": -2},
+    "NiSe":   {"Ni":  2, "Se": -2},
+
+    "Cu2O":   {"Cu":  1, "O": -2},
+    "CuO":    {"Cu":  2, "O": -2},
+    "Cu2S":   {"Cu":  1, "S": -2},
+    "CuS":    {"Cu":  2, "S": -2},
+    "CuSe":   {"Cu":  2, "Se": -2},
+    "CuF":    {"Cu":  1, "F": -1},
+    "CuF2":   {"Cu":  2, "F": -1},
+    "CuCl":   {"Cu":  1, "Cl": -1},
+    "CuCl2":  {"Cu":  2, "Cl": -1},
+    "CuBr":   {"Cu":  1, "Br": -1},
+    "CuBr2":  {"Cu":  2, "Br": -1},
+
+    "TiO":    {"Ti":  2, "O": -2},
+    "Ti2O3":  {"Ti":  3, "O": -2},
+    "TiO2":   {"Ti":  4, "O": -2},
+
+    "PbO":    {"Pb":  2, "O": -2},
+    "PbO2":   {"Pb":  4, "O": -2},
+    "PbS":    {"Pb":  2, "S": -2},
+    "PbSe":   {"Pb":  2, "Se": -2},
+    "PbTe":   {"Pb":  2, "Te": -2},
+    "PbF2":   {"Pb":  2, "F": -1},
+    "PbF4":   {"Pb":  4, "F": -1},
+    "PbCl2":  {"Pb":  2, "Cl": -1},
+    "PbBr2":  {"Pb":  2, "Br": -1},
+    "PbI2":   {"Pb":  2, "I": -1},
+    "Pb2O":   {"Pb": 1, "O": -2},
+
+    "SnO":    {"Sn":  2, "O": -2},
+    "SnO2":   {"Sn":  4, "O": -2},
+    "SnS":    {"Sn":  2, "S": -2},
+    "SnS2":   {"Sn":  4, "S": -2},
+    "SnSe":   {"Sn":  2, "Se": -2},
+    "SnSe2":  {"Sn":  4, "Se": -2},
+    "SnTe":   {"Sn":  2, "Te": -2},
+    "SnF2":   {"Sn":  2, "F": -1},
+    "SnF4":   {"Sn":  4, "F": -1},
+    "SnCl2":  {"Sn":  2, "Cl": -1},
+    "SnCl4":  {"Sn":  4, "Cl": -1},
+    "SnI2":   {"Sn":  2, "I": -1},
+
+    "Sb2O3":  {"Sb":  3, "O": -2},
+    "Sb2O5":  {"Sb":  5, "O": -2},
+    "SbF3":   {"Sb":  3, "F": -1},
+    "SbF5":   {"Sb":  5, "F": -1},
+    "SbCl3":  {"Sb":  3, "Cl": -1},
+    "SbCl5":  {"Sb":  5, "Cl": -1},
+
+    "As2O3":  {"As":  3, "O": -2},
+    "As2O5":  {"As":  5, "O": -2},
+
+    "Tl2O":   {"Tl":  1, "O": -2},
+    "Tl2O3":  {"Tl":  3, "O": -2},
+    "TlCl":   {"Tl":  1, "Cl": -1},
+    "TlCl3":  {"Tl":  3, "Cl": -1},
+    "TlBr":   {"Tl":  1, "Br": -1},
+    "TlI":    {"Tl":  1, "I": -1},
+
+    "Au2O":   {"Au":  1, "O": -2},
+    "Au2O3":  {"Au":  3, "O": -2},
+
+    "Ir2O3":  {"Ir":  3, "O": -2},
+    "IrO2":   {"Ir":  4, "O": -2},
+
+    "OsO2":   {"Os":  4, "O": -2},
+
+    "PtO":    {"Pt":  2, "O": -2},
+    "PtO2":   {"Pt":  4, "O": -2},
+
+    "PdO":    {"Pd":  2, "O": -2},
+    "PdO2":   {"Pd":  4, "O": -2},
+
+    "Rh2O3":  {"Rh":  3, "O": -2},
+    "RhO2":   {"Rh":  4, "O": -2},
+
+    "UO2":    {"U":   4, "O": -2},
+    "UO3":    {"U":   6, "O": -2},
+
+    "Ce2O3":  {"Ce":  3, "O": -2},
+    "CeO2":   {"Ce":  4, "O": -2},
+
+    "EuO":    {"Eu":  2, "O": -2},
+    "Eu2O3":  {"Eu":  3, "O": -2},
+
+    "Pr2O3":  {"Pr":  3, "O": -2},
+    "PrO2":   {"Pr":  4, "O": -2},
+
+    "Tb2O3":  {"Tb":  3, "O": -2},
+    "TbO2":   {"Tb":  4, "O": -2},
+
+    "Yb2O3":  {"Yb":  3, "O": -2},
+    "YbO":    {"Yb":  2, "O": -2}
+  },
+
+  "mixed_valence_compounds": {
+    "_note": "Compounds explicitly excluded from oxidation_state_overrides. Charge balance is ambiguous or requires site-specific assignment. MAPLE calculation requires user-supplied oxidation_states dict.",
+    "Fe3O4":  "Fe2+/Fe3+ mixed valence (spinel, inverse)",
+    "Co3O4":  "Co2+/Co3+ mixed valence (spinel, normal)",
+    "Mn3O4":  "Mn2+/Mn3+ mixed valence (hausmannite, spinel)",
+    "Pb2O3":  "Pb2+/Pb4+ mixed valence",
+    "Pb3O4":  "Pb2+/Pb4+ mixed valence (minium)",
+    "FeS2":   "Assigned Fe2+/S- (pyrite) in overrides; alternative Fe4+/S2- assignment exists, verify before use"
+  },
+
+  "reference_maple": {
+    "_note": "Hoppe reference MAPLE values (kcal/mol per formula unit). Used to validate computed values and for additivity testing without requiring the user to compute binaries. All values from Hoppe (1966) or Hoppe (1995) unless noted.",
+
+    "TiO2_rutile":  {"maple_kcal_mol": 3254.6, "source": "Hoppe_1995_Table5", "space_group": "P4_2/mnm"},
+    "TiO2_anatase": {"maple_kcal_mol": 3260.7, "source": "Hoppe_1995_Table5", "space_group": "I4_1/amd"},
+    "TiO2_brookite":{"maple_kcal_mol": 3253.7, "source": "Hoppe_1995_Table5", "space_group": "Pbca"},
+    "BaTiO3_cubic": {"maple_kcal_mol": 4095.0, "source": "Hoppe_1995_p560",   "space_group": "Pm-3m"},
+    "BaO_rocksalt": {"maple_kcal_mol": 4092.0, "_note": "Binary sum BaO+TiO2 from Hoppe 1995 p.560; individual BaO value back-calculated", "source": "Hoppe_1995_p560"}
+  },
+
+  "isostructural_series": {
+    "_note": "MAPLE x d_ref (kcal/mol.Ang): constant within an isostructural family. Deviations flag topological errors or anomalous bonding (wrong structure type, wrong CN). madelung_factor is dimensionless and also invariant within the family.",
+
+    "rock_salt_AO_alkaline_earth": {
+      "description": "Alkaline earth oxides MO in Fm-3m (NaCl type). MAPLE x d_ref constant across MgO, CaO, SrO, BaO.",
+      "maple_x_dref_kcal_mol_ang": 2320.9,
+      "madelung_factor": 1.7476,
+      "members": ["MgO", "CaO", "SrO", "BaO"],
+      "source": "Reeves-McLaren_2026_calculated"
+    },
+
+    "rock_salt_AX_MF": {
+      "description": "NaCl-type structures: Madelung factor invariant at 1.7476 for all AB compositions in Fm-3m.",
+      "madelung_factor": 1.7476,
+      "partial_madelung_constant": 0.8738,
+      "members_examples": ["NaCl", "KCl", "MgO", "CaO", "FeO", "NiO", "CoO"],
+      "source": "Hoppe_1966",
+      "notes": "MF deviation from 1.7476 in an Fm-3m structure indicates incorrect topology assignment or severe positional error."
+    },
+
+    "zinc_blende_AX_MF": {
+      "description": "Zinc blende (F-43m / F4-3m) structures: Madelung factor 1.6381.",
+      "madelung_factor": 1.6381,
+      "members_examples": ["ZnS", "GaAs", "InP", "SnTe_wrong_assignment"],
+      "source": "standard_electrostatics",
+      "notes": "MF=1.638 in a structure claimed to be NaCl-type (MF should be 1.748) is a diagnostic fingerprint for a zinc blende mis-assignment. See SnTe ICSD 53956."
+    },
+
+    "fluorite_AX2_MF": {
+      "description": "Fluorite-type (Fm-3m, CaF2 type): Madelung factor ~5.039.",
+      "madelung_factor": 5.039,
+      "members_examples": ["CaF2", "SrF2", "BaF2", "ZrO2_cubic", "CeO2", "UO2"],
+      "source": "standard_electrostatics"
+    },
+
+    "rutile_AX2_MF": {
+      "description": "Rutile-type (P4_2/mnm): Madelung factor ~4.816.",
+      "madelung_factor": 4.816,
+      "members_examples": ["TiO2", "SnO2", "MnO2", "RuO2", "IrO2", "NbO2"],
+      "source": "standard_electrostatics"
+    },
+
+    "corundum_A2X3_MF": {
+      "description": "Corundum-type (R-3c): Madelung factor ~25.0 (structure-dependent, use as guide only).",
+      "madelung_factor": 25.0,
+      "members_examples": ["Al2O3", "Fe2O3", "Cr2O3", "V2O3", "Ti2O3"],
+      "source": "approximate",
+      "notes": "Madelung factor less diagnostic for corundum than for cubic structure types due to structural degrees of freedom."
+    }
+  }
+}

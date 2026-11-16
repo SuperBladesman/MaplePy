@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# MaplePy and Hopper runs, wherever they are made
+outputs_*/
+# Never commit licensed structures or results made from them
+*.cif
+!examples/*.cif
