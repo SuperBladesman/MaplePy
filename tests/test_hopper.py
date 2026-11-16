@@ -1,6 +1,7 @@
-"""Hopper on MaplePy runs: decomposition, residual, classification, and the
-estimate flag of 1.2.9."""
+"""Hopper on MaplePy runs: decomposition, residual, classification, the
+estimate flag of 1.2.9, and the evidence files of 1.3.0."""
 import json
+import shutil
 from pathlib import Path
 
 import pandas as pd
@@ -64,18 +65,19 @@ def perovskite(a, A, B):
 
 
 def test_a_residual_resting_on_an_estimate_says_so(tmp_path):
-    # PbO's reference value is an estimate, with no source; TiO2's is an
-    # ICSD median. The residual is computed and classified as before.
-    s = perovskite(3.97, 'Pb', 'Ti')
-    s.add_oxidation_state_by_element({'Pb': 2, 'Ti': 4, 'O': -2})
+    # Ni2O3's reference value is an estimate (no ambient phase to measure);
+    # La2O3's and BaO's and TiO2's are ICSD medians. The residual is computed
+    # and classified as before.
+    s = perovskite(3.84, 'La', 'Ni')
+    s.add_oxidation_state_by_element({'La': 3, 'Ni': 3, 'O': -2})
     t = Structure.from_spacegroup('Pm-3m', Lattice.cubic(4.0019), ['Ba', 'Ti', 'O'],
                                   [[0, 0, 0], [0.5, 0.5, 0.5], [0.5, 0.5, 0]])
     t.add_oxidation_state_by_element({'Ba': 2, 'Ti': 4, 'O': -2})
-    df = by_cif(_run(tmp_path, {'PbTiO3.cif': s, 'BaTiO3.cif': t}))
-    assert df.loc['PbTiO3.cif', 'estimated_binaries'] == 'PbO'
+    df = by_cif(_run(tmp_path, {'LaNiO3.cif': s, 'BaTiO3.cif': t}))
+    assert df.loc['LaNiO3.cif', 'estimated_binaries'] == 'Ni2O3'
     assert pd.isna(df.loc['BaTiO3.cif', 'estimated_binaries']) or \
         df.loc['BaTiO3.cif', 'estimated_binaries'] == ''
-    assert df.loc['PbTiO3.cif', 'success']
+    assert df.loc['LaNiO3.cif', 'success']
 
 
 def test_an_oxidation_state_with_no_binary_oxide_is_tier_1(tmp_path):
@@ -90,14 +92,19 @@ def test_an_oxidation_state_with_no_binary_oxide_is_tier_1(tmp_path):
 def test_the_reference_table_and_its_flags():
     d = json.loads(TABLE.read_text())
     e = d['entries']
-    assert len(e) == d['_metadata']['n_entries'] == 112
+    assert d['_metadata']['version'] == '1.3.0'
+    assert len(e) == d['_metadata']['n_entries'] == 109
     est = {x['formula'] for x in e if x['source'] == 'estimated'}
-    assert len(est) == 23
-    # Cu2O's recorded validation source does not reproduce (797.9, not 730.0)
+    assert len(est) == 15
+    # 1.3.0: Ni2O3 and Co2O3 are isostructural corundum estimates, computed
+    # and so sourced; the other 13 were set by hand. Cu2O's recorded
+    # validation source does not reproduce (797.9, not 730.0).
     unsourced = {x['formula'] for x in e if not x['sourced']}
-    assert unsourced == est | {'Cu2O'}
+    assert unsourced == (est - {'Ni2O3', 'Co2O3'}) | {'Cu2O'}
     assert all('review_note' in x for x in e if x['formula'] in ('CuO', 'ZnO', 'Cu2O'))
-    assert maplepy.hopper_engine().ESTIMATED_BINARIES == unsourced
+    # oxides that do not exist at ambient conditions are not in the table
+    assert not {'Bi2O5', 'Ru2O5', 'RuO3', 'Re2O5'} & {x['formula'] for x in e}
+    assert maplepy.hopper_engine().ESTIMATED_BINARIES == est | {'Cu2O'}
     assert 'J. Appl. Cryst.' in d['_metadata']['citation']
 
 
@@ -135,3 +142,45 @@ def test_the_recorded_cu2o_value_does_not_reproduce(tmp_path):
                 if x['formula'] == 'Cu2O')
     assert cu2o['maple_kcal_mol'] == 730.0 and cu2o['sourced'] is False
 
+
+
+# ── 1.3.0: the two evidence files a run folder may hold ─────────────────────
+
+def _rerun(example_run, tmp_path, name, frame):
+    """Hopper again on a copy of the example run, with one evidence file."""
+    out, _ = example_run
+    run = tmp_path / 'run'
+    shutil.copytree(out, run)
+    frame.to_csv(run / name, index=False)
+    return by_cif(maplepy.additivity(run))
+
+
+def test_type_2_1_is_assigned_on_evidence_only(example_run, tmp_path):
+    # Without alternative_assignments.csv nothing is 2.1, however large the
+    # residual (the old rule, delta > 10%, is gone).
+    _, df = example_run
+    assert '2.1' not in set(df['classification'].astype(str))
+    # A constructed evidence row: an assignment other than the deposited one
+    # that makes SrTiO3 (3.1 as deposited) additive.
+    ev = pd.DataFrame([dict(source_cif='SrTiO3_cubic.cif',
+                            deposited=json.dumps({'Sr': [2], 'Ti': [4]}),
+                            best_states=json.dumps({'Sr': 3, 'Ti': 3}),
+                            best_delta=0.4)])
+    c = _rerun(example_run, tmp_path, 'alternative_assignments.csv', ev)
+    assert c.loc['SrTiO3_cubic.cif', 'classification'] == '2.1'
+    assert 'Sr3+' in c.loc['SrTiO3_cubic.cif', 'classification_label']
+    # evidence that repeats the deposited states is not evidence
+    ev['best_states'] = json.dumps({'Sr': 2, 'Ti': 4})
+    c = _rerun(example_run, tmp_path / 'again', 'alternative_assignments.csv', ev)
+    assert c.loc['SrTiO3_cubic.cif', 'classification'] == '3.1'
+
+
+def test_a_short_anion_anion_contact_is_2_5(example_run, tmp_path):
+    # BaTiO3 is additive; an Eir structures table placing two oxide ions
+    # 2.0 A apart makes it a coordinate error, whatever the residual.
+    ev = pd.DataFrame([dict(filename='BaTiO3_cubic.cif', anion_anion_min=2.0),
+                       dict(filename='TiO2_rutile.cif', anion_anion_min=2.53)])
+    c = _rerun(example_run, tmp_path, 'eir_structures.csv', ev)
+    assert c.loc['BaTiO3_cubic.cif', 'classification'] == '2.5'
+    assert 'anion-anion contact' in c.loc['BaTiO3_cubic.cif', 'classification_label']
+    assert c.loc['TiO2_rutile.cif', 'classification'] == 'Additive'

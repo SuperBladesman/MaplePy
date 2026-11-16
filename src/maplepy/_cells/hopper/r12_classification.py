@@ -2,7 +2,9 @@
 # Edit the notebook, not this file, then rebuild.
 # The action at the end of the cell; its definitions are in e12_classification.py.
 # ── Classify ─────────────────────────────────────────────────────────────────
-df_classified = classify_additivity(df_additivity, df_results, df_summary)
+df_classified = classify_additivity(df_additivity, df_results, df_summary,
+                                    assignment_evidence=load_assignment_evidence(MAPLE_DIR),
+                                    anion_contacts=load_anion_contacts(MAPLE_DIR))
 
 # v1.1: the 2.5 population, counted from the data rather than from a string.
 _n25 = int((df_classified['classification'] == '2.5').sum())
@@ -34,12 +36,23 @@ for tier_num in [0, 1, 2, 3]:
 print()
 
 # Code-level summary
+# 1.3.0: the label printed for a code is the registry's. It used to be
+# the first row's, which for 2.1 and 2.5 carries that one structure's states
+# or detectors and read as if it described the whole group.
+def _group_label(code):
+    return 'Additive' if code == 'Additive' else _label_for_code(code)
+
 print("Breakdown by classification code:")
 for code in CODE_ORDER:
     subset = df_classified[df_classified['classification'] == code]
     if len(subset) > 0:
-        label = subset['classification_label'].iloc[0]
-        print(f"  {code:10s}  {label:40s}  {len(subset):5d}")
+        print(f"  {code:10s}  {_group_label(code):40s}  {len(subset):5d}")
+        if code == '2.5':
+            for _det in ('O-site MAPLE CV', 'short contact',
+                         'anion-anion contact'):
+                _k = int(subset['classification_label'].str.contains(
+                    _det, regex=False).sum())
+                print(f"  {'':10s}    found by {_det:26s}  {_k:5d}")
 print("=" * 65)
 _pop = additivity_population(df_classified)
 print(f"  residual population: {len(_pop)} of {len(df_classified)} "
@@ -52,7 +65,7 @@ print()
 for code in CODE_ORDER:
     subset = df_classified[df_classified['classification'] == code]
     if len(subset) > 0:
-        label = subset['classification_label'].iloc[0]
+        label = _group_label(code)
         tier  = subset['classification_tier'].iloc[0]
         tier_str = f"Tier {tier}" if tier > 0 else "Additive"
         print(f"\n{code} — {label} [{tier_str}] ({len(subset)} structures)")

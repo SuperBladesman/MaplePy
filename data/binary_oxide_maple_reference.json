@@ -2,7 +2,7 @@
   "_metadata": {
     "title": "Binary Oxide MAPLE Reference Table",
     "description": "Reference MAPLE (Madelung Part of Lattice Energy) values for binary oxides, for use with Hoppe's additivity theorem. Values are in kcal/mol per formula unit.",
-    "version": "1.1.1",
+    "version": "1.3.0",
     "authors": [
       "Peter Gross",
       "Nik Reeves-McLaren"
@@ -19,14 +19,15 @@
       "estimated": "Interpolated from chemical trends within structure type families (e.g., lanthanide contraction in bixbyite RE2O3 series), or set by hand. These have no published or computed source (sourced: false), carry additional uncertainty, and should be replaced when a source becomes available. Hopper 1.2.9 and later report every decomposition that uses one."
     },
     "source_classifications": {
-      "icsd_median": "Calibrated from ICSD median (88 of 112, 79%)",
-      "estimated": "Interpolated or estimated, with no published or computed source (23 of 112, 21%)",
-      "validation": "From a MaplePy validation structure (1 of 112, 1%); does not reproduce, so unsourced"
+      "icsd_median": "Calibrated from ICSD median (93 of 109, 85%)",
+      "estimated": "Estimated, with no ICSD calibration (15 of 109, 14%): Ni2O3 and Co2O3 are isostructural corundum estimates with a stated uncertainty; the other 13 were set by hand and enter no decomposition reported in the associated paper",
+      "validation": "From a MaplePy validation structure (1 of 109); does not reproduce, so unsourced"
     },
-    "n_entries": 112,
+    "n_entries": 109,
     "licence": "CC-BY-4.0",
     "citation": "Reeves-McLaren, N.; Gross, P. Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides. J. Appl. Cryst., under review (2026).",
-    "metadata_note": "v1.1.1: the citation names the journal the manuscript is under review at; each entry says whether its value has a source that reproduces (sourced); CuO, ZnO and Cu2O carry a review note; n_entries and source_classifications are computed from the entries list. No value has changed since v1.0.0."
+    "metadata_note": "v1.3.0 (ui5052 revision): Bi2O3, PbO, HgO, TcO2 and Tl2O calibrated from ambient ICSD entries; Ni2O3 re-estimated and Co2O3 added by isostructural scaling of six calibrated corundum sesquioxides by the ratio of cation-oxygen radius sums, using Shannon radii for low-spin Ni3+ (0.56 A) and Co3+ (0.545 A); Bi2O5, Ru2O5, RuO3 and Re2O5 removed because no ambient binary oxide of those oxidation states exists. n_entries and source_classifications are computed from the entries list. Earlier history: v1.1.1 added the sourced flag and review notes; values were unchanged from v1.0.0 to v1.1.1.",
+    "ui5052_R1_rev2": "Bi2O3, PbO, HgO, TcO2 and Tl2O calibrated from ambient ICSD entries (medians). Bi2O5, Ru2O5, RuO3 and Re2O5 removed: no ambient binary oxide of Bi(V), Ru(V), Ru(VI) or Re(V) exists, so structures that need one are classified 1.3, as Os2O5, Tc2O5 and Ir2O5 already were."
   },
   "_field_descriptions": {
     "formula": "Reduced chemical formula of the binary oxide",
@@ -109,25 +110,15 @@
     },
     {
       "formula": "Bi2O3",
-      "maple_kcal_mol": 2580.0,
-      "structure_type": "Monoclinic P2_1/c",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
-    },
-    {
-      "formula": "Bi2O5",
-      "maple_kcal_mol": 4300.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "maple_kcal_mol": 3471.8,
+      "structure_type": "alpha-Bi2O3 P2_1/c",
+      "source": "icsd_median",
+      "n_icsd_entries": 17,
+      "icsd_range_min": 3310.5,
+      "icsd_range_max": 3516.3,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 17 ambient ICSD entries (15072, 94229, 118220, 118221, 260800, 2374, 15752, 47620, 178328, 179975, 179979, 179982, 179993, 182611, 182748, 182995, 183274), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "CaO",
@@ -194,6 +185,20 @@
       "icsd_range_max": 2882,
       "confidence": "medium",
       "sourced": true
+    },
+    {
+      "formula": "Co2O3",
+      "maple_kcal_mol": 4325.6,
+      "structure_type": "Corundum R-3c (hypothetical)",
+      "source": "estimated",
+      "n_icsd_entries": null,
+      "icsd_range_min": null,
+      "icsd_range_max": null,
+      "confidence": "medium",
+      "sourced": true,
+      "method": "isostructural_scaling",
+      "uncertainty_kcal_mol": 16.9,
+      "review_note": "Isostructural estimate (ui5052 R1): six calibrated corundum M2O3 (Al, Cr, Fe, Ga, V, Ti) scaled to low-spin Co3+ (Shannon r = 0.545 A); mean 4325.6, SD 16.9. No ambient Co2O3 exists; replaces the Co3O4 stand-in for Co3+."
     },
     {
       "formula": "Co3O4",
@@ -408,14 +413,15 @@
     },
     {
       "formula": "HgO",
-      "maple_kcal_mol": 850.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "maple_kcal_mol": 967.0,
+      "structure_type": "Montroydite Pnma",
+      "source": "icsd_median",
+      "n_icsd_entries": 3,
+      "icsd_range_min": 962.9,
+      "icsd_range_max": 968.2,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 3 ambient ICSD entries (14124, 15890, 40316), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "Ho2O3",
@@ -617,14 +623,17 @@
     },
     {
       "formula": "Ni2O3",
-      "maple_kcal_mol": 4100.0,
-      "structure_type": "Estimated",
+      "maple_kcal_mol": 4292.5,
+      "structure_type": "Corundum R-3c (hypothetical)",
       "source": "estimated",
       "n_icsd_entries": null,
       "icsd_range_min": null,
       "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "confidence": "medium",
+      "sourced": true,
+      "method": "isostructural_scaling",
+      "uncertainty_kcal_mol": 16.8,
+      "review_note": "Isostructural estimate (ui5052 R1): six calibrated corundum M2O3 (Al, Cr, Fe, Ga, V, Ti) scaled to low-spin Ni3+ (Shannon r = 0.56 A); mean 4292.5, SD 16.8. Replaces 4100.0 (interpolated by atomic number, Ti-V-Cr-Fe)."
     },
     {
       "formula": "NiO",
@@ -683,14 +692,15 @@
     },
     {
       "formula": "PbO",
-      "maple_kcal_mol": 810.0,
-      "structure_type": "Litharge",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "maple_kcal_mol": 868.5,
+      "structure_type": "Litharge P4/nmm",
+      "source": "icsd_median",
+      "n_icsd_entries": 10,
+      "icsd_range_min": 859.8,
+      "icsd_range_max": 872.8,
+      "confidence": "high",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 10 ambient ICSD entries (15466, 26596, 53927, 62842, 64778, 64799, 197689, 198372, 600296, 647266), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "PbO2",
@@ -792,17 +802,6 @@
       "sourced": true
     },
     {
-      "formula": "Re2O5",
-      "maple_kcal_mol": 4400.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
-    },
-    {
       "formula": "Re2O7",
       "maple_kcal_mol": 5000.0,
       "structure_type": "Various",
@@ -858,17 +857,6 @@
       "sourced": true
     },
     {
-      "formula": "Ru2O5",
-      "maple_kcal_mol": 4250.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
-    },
-    {
       "formula": "RuO2",
       "maple_kcal_mol": 3244.8,
       "structure_type": "Rutile P4_2/mnm",
@@ -878,17 +866,6 @@
       "icsd_range_max": 3252,
       "confidence": "high",
       "sourced": true
-    },
-    {
-      "formula": "RuO3",
-      "maple_kcal_mol": 4500.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
     },
     {
       "formula": "SO3",
@@ -1057,14 +1034,15 @@
     },
     {
       "formula": "TcO2",
-      "maple_kcal_mol": 3250.0,
-      "structure_type": "Rutile P4_2/mnm",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "maple_kcal_mol": 3191.2,
+      "structure_type": "MoO2-type P2_1/c",
+      "source": "icsd_median",
+      "n_icsd_entries": 2,
+      "icsd_range_min": 3175.9,
+      "icsd_range_max": 3206.5,
+      "confidence": "medium",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 2 ambient ICSD entries (254200, 647511), MaplePy 1.3.6; 173151 excluded as a non-stoichiometric refinement. Median replaces the earlier hand-set value of 3250.0."
     },
     {
       "formula": "ThO2",
@@ -1112,14 +1090,15 @@
     },
     {
       "formula": "Tl2O",
-      "maple_kcal_mol": 650.0,
-      "structure_type": "Various",
-      "source": "estimated",
-      "n_icsd_entries": null,
-      "icsd_range_min": null,
-      "icsd_range_max": null,
-      "confidence": "low",
-      "sourced": false
+      "maple_kcal_mol": 562.0,
+      "structure_type": "anti-CdCl2 R-3m (and C2/m description)",
+      "source": "icsd_median",
+      "n_icsd_entries": 2,
+      "icsd_range_min": 561.4,
+      "icsd_range_max": 562.7,
+      "confidence": "medium",
+      "sourced": true,
+      "review_note": "Calibrated for ui5052 R1 from 2 ambient ICSD entries (16220, 77699), MaplePy 1.3.6; median replaces the earlier hand-set value."
     },
     {
       "formula": "Tl2O3",

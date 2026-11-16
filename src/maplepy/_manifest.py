@@ -52,8 +52,8 @@ MAPLEPY_NOTEBOOK_ORDER = [
 ]
 
 # Hopper.ipynb
-HOPPER_VERSION = '1.2.9'
-HOPPER_NOTEBOOK_SHA256 = '88c77bd38adeb1f9c48c0ff02ea67d95b8e28df5822add75f20d1fa6b7e2d007'
+HOPPER_VERSION = '1.3.0'
+HOPPER_NOTEBOOK_SHA256 = 'ca4e62a26fd1e65a62ce4c372945518c3ca035eb91fc4a8f7f5e374c7ab7210f'
 
 # Loaded, in this order, into one namespace when the engine starts.
 HOPPER_ENGINE_CELLS = [

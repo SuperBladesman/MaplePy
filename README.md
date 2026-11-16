@@ -11,7 +11,7 @@ MaplePy reads a folder of CIF files and computes the electrostatic (Madelung) pa
 
 The second question is the hard one. A residual above 1% can mean covalency the point-charge model cannot see; it can equally mean a wrong oxidation state, a disorder model averaged into one charge, a binary oxide that does not exist, or coordinates that no ionic solid could have. Hopper separates these into twelve codes in three tiers, so that a residual is interpreted rather than merely reported.
 
-Both tools were written for a study of 1,410 perovskite and pyrochlore structures from the Inorganic Crystal Structure Database (ICSD), now under review at *J. Appl. Cryst.* This release, maplepy 1.4.0, runs the versions behind that study: MaplePy 1.3.6, unchanged, and Hopper 1.2.9, which adds one column to 1.2.8. Run on the study's MaplePy results, it reproduces the classification of all 1,410 structures.
+Both tools were written for a study of 1,410 perovskite and pyrochlore structures from the Inorganic Crystal Structure Database (ICSD), now under review at *J. Appl. Cryst.* This release, maplepy 1.4.0, runs the versions behind the revised manuscript: MaplePy 1.3.6 and Hopper 1.3.0. Run on the study's MaplePy results with the study's two evidence files (below), it reproduces the classification of all 1,410 structures.
 
 ## What MaplePy reports
 
@@ -37,18 +37,34 @@ Hopper decomposes each structure into binary oxides from the per-site oxidation 
 | 1.2 | 1 | MaplePy could not compute a MAPLE value (listed in `maple_failed.csv`, so always zero here) |
 | 1.3 | 1 | The oxidation state is real and has no ambient binary oxide (Fe(IV), Co(IV), ...) |
 | 1.4 | 1 | The charge asked for is not an oxidation state: a mean over a shared or disproportionated site |
-| 2.1 | 2 | Δ > 10% in an ordered, oxygen-balanced structure: an oxidation state is probably wrong |
+| 2.1 | 2 | A different charge-balanced assignment of common oxidation states makes the structure additive, and the chemistry agrees: the deposited state is wrong (needs `alternative_assignments.csv`) |
 | 2.2 | 2 | *Z* taken as 1 when the cell holds more (cannot arise from MaplePy; kept for other calculators) |
 | 2.3 | 2 | Cation disorder, through the mean-field approximation |
-| 2.4 | 2 | The oxygen of the decomposition does not balance (Co<sub>3</sub>O<sub>4</sub> standing in for Co<sub>2</sub>O<sub>3</sub>) |
-| 2.5 | 2 | Coordinate error: *d*<sub>min</sub> < 1.6 Å, or a spread of oxygen-site MAPLE values (CV > 0.05) that no sound *Pnma* perovskite has |
+| 2.4 | 2 | The oxygen of the decomposition does not balance |
+| 2.5 | 2 | Coordinate error: *d*<sub>min</sub> < 1.6 Å, a spread of oxygen-site MAPLE values (CV > 0.05) that no sound *Pnma* perovskite has, or two oxide ions closer than 2.35 Å (needs `eir_structures.csv`) |
 | 2.6 | 2 | Anion vacancies: fractional occupancy on the anion sublattice only |
 | 2.7 | 2 | Split-site disorder model: two sites closer than 0.5 Å |
 | 3.1 | 3 | Δ ≥ 1% with nothing above to explain it: a genuine violation |
 
-Tier 1 has no residual to interpret, Tier 2 has one that should not be taken at face value, and Tier 3 has one that should. The codes are assigned in a fixed order, built on one rule: a caveat must not mask a defect. So Tier 1 comes first; then the structural defects, 2.7 and then 2.5, whatever the residual; then the additive test; then the other Tier 2 caveats; then 3.1. A disordered structure that agrees with its binaries is additive; a structure with impossible coordinates is 2.5 even when its residual is small.
+Tier 1 has no residual to interpret, Tier 2 has one that should not be taken at face value, and Tier 3 has one that should. The codes are assigned in a fixed order, built on one rule: a caveat must not mask a defect. So 2.1, which rests on evidence, comes first, because a wrong deposited state can ask for a binary oxide that does not exist; then Tier 1; then the structural defects, 2.7 and then 2.5, whatever the residual; then the additive test; then the other Tier 2 caveats; then 3.1. A disordered structure that agrees with its binaries is additive; a structure with impossible coordinates is 2.5 even when its residual is small.
 
 From Hopper 1.2.9, every decomposition that uses an estimated or unsourced reference value says which (`estimated_binaries`). Nothing is reclassified on that account.
+
+### The two evidence files
+
+Two tests need evidence that a MaplePy run does not contain. Hopper reads it from the run folder when it is there, and says when it is not; every other code is assigned as before.
+
+| File | For | Written by |
+|---|---|---|
+| `alternative_assignments.csv` | 2.1 | `tools/alternative_assignments.py`: for each structure a first Hopper pass leaves neither additive nor 2.5 or 2.7, every charge-balanced combination of the common oxidation states of its cations, recomputed through MaplePy |
+| `eir_structures.csv` | the anion–anion test of 2.5 | [Eir](https://doi.org/10.5281/zenodo.24138854) 2.0.46 or later: its structures table, `anion_anion_min` per file |
+
+```bash
+hopper RUN                                          # first pass
+python tools/alternative_assignments.py RUN CIFS    # the 2.1 evidence
+cp eir_batch_results_v2.0.46_..._structures.csv RUN/eir_structures.csv
+hopper RUN                                          # second pass
+```
 
 ## Getting started
 
@@ -133,18 +149,18 @@ The package is built from their cells by `tools/build_engine.py`, and the tests 
 | `maple_failed.csv` | MaplePy | CIF that could not be processed, with the reason |
 | `additivity_classified.csv` | Hopper | structure: binary sum, Δ, oxygen balance, missing and estimated binaries, code, tier, label, Hopper version |
 
-Hopper also writes two subsets, chosen by space group alone: `additivity_perovskites.csv` (nine space groups, *Pnma* among them) and `additivity_pyrochlores.csv` (*Fd*3̄*m* and *Fm*3̄*m*, so a rock-salt oxide lands among the pyrochlores). `binary_oxide_reference.csv` is the notebook's inline table of 104 binaries; the values Hopper used are those of the 112-entry table below, which agrees with the inline table wherever both hold a formula (Hopper stops if they do not).
+Hopper also writes two subsets, chosen by space group alone: `additivity_perovskites.csv` (nine space groups, *Pnma* among them) and `additivity_pyrochlores.csv` (*Fd*3̄*m* and *Fm*3̄*m*, so a rock-salt oxide lands among the pyrochlores). `binary_oxide_reference.csv` is the notebook's inline table of 101 binaries; the values Hopper used are those of the 109-entry table below, which agrees with the inline table wherever both hold a formula (Hopper stops if they do not).
 
 ## The binary oxide reference table
 
-[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) contains 112 binary oxides. 88 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range; 23 are estimates, interpolated within a structure type or set by hand, with no published or computed source (`"sourced": false`); 1, Cu<sub>2</sub>O, was recorded as a MaplePy validation value and does not reproduce (MaplePy gives 797.9 kcal/mol for cuprite, not 730.0), so it is marked unsourced too. The table contains derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. Three entries carry a note saying they need re-deriving: CuO and ZnO, which rest on high-pressure rock-salt phases, and Cu<sub>2</sub>O. [data/README.md](data/README.md) describes the three data files.
+[data/binary_oxide_maple_reference.json](data/binary_oxide_maple_reference.json) (version 1.3.0) contains 109 binary oxides. 93 values are medians of MaplePy MAPLE over qualifying ICSD entries at ambient conditions (273–303 K, < 0.15 MPa), each with the number of entries and their range. 15 are estimates: Ni<sub>2</sub>O<sub>3</sub> and Co<sub>2</sub>O<sub>3</sub>, which have no ambient phase, by scaling six calibrated corundum sesquioxides by the ratio of cation–oxygen radius sums, with a stated uncertainty; the other 13 were set by hand, have no published or computed source (`"sourced": false`), and enter no decomposition in the study. 1, Cu<sub>2</sub>O, was recorded as a MaplePy validation value and does not reproduce (MaplePy gives 797.9 kcal/mol for cuprite, not 730.0), so it is marked unsourced too. Oxides that do not exist at ambient conditions are not in the table (Bi<sub>2</sub>O<sub>5</sub>, Ru<sub>2</sub>O<sub>5</sub>, RuO<sub>3</sub> and Re<sub>2</sub>O<sub>5</sub> were removed in 1.3.0), so a structure that needs one is 1.3. The table contains derived statistics only: no coordinates and no CIF content. It is released under CC-BY 4.0. CuO, ZnO and Cu<sub>2</sub>O carry a note saying they need re-deriving; the seven entries changed in 1.3.0 carry a note saying how. [data/README.md](data/README.md) describes the three data files.
 
 ## Limitations
 
 - **Oxides.** The anion is identified by the sign of its charge, and by oxygen where no charges are yet assigned; the reference table and Hopper's decompositions are for oxides only.
 - **Molecular anions.** Where covalent groups (SO<sub>4</sub><sup>2−</sup>, PO<sub>4</sub><sup>3−</sup>) are present, the additivity theorem needs increments rather than molecular binary oxides; Hopper does not implement them.
 - **Shared sites in Hopper.** A site shared by two cations is decomposed as its majority species, at the mean charge. Such structures are flagged (2.3, or 1.4 where the mean is not an oxidation state), but their residuals are against an approximate sum.
-- **Estimates.** In the study, 82 of the 1,380 decomposed structures rest on an estimated value (none on Cu<sub>2</sub>O), 43 of them on Ni<sub>2</sub>O<sub>3</sub>, which has no ambient phase to measure. `estimated_binaries` names them.
+- **Estimates.** In the study, 94 of the 1,372 decomposed structures rest on an estimated value, 43 on Ni<sub>2</sub>O<sub>3</sub> and 51 on Co<sub>2</sub>O<sub>3</sub>, which have no ambient phase to measure (none on Cu<sub>2</sub>O or a hand-set value). `estimated_binaries` names them.
 - **A user-supplied binary table.** Hopper's `BINARY_CSV` option reads your own binary values, but the bundled table then overrides any formula it also holds. To use your own values throughout, edit or replace the JSON.
 
 ## Tests

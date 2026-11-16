@@ -4,9 +4,9 @@ maplepy is the package; MaplePy and Hopper are its two engines, each a notebook 
 
 ## maplepy
 
-### maplepy 1.4.0 – unreleased
+### maplepy 1.4.0 – 16th November 2026
 
-The first packaged release, running MaplePy 1.3.6 and Hopper 1.2.9.
+The first packaged release, running MaplePy 1.3.6 and Hopper 1.3.0: the code of the revised *J. Appl. Cryst.* manuscript (ui5052).
 
 - `maplepy FOLDER` runs `batch_maple()` on a folder of CIFs; `maplepy FILE.cif` prints one structure; `maplepy --validate` runs the notebook's three known answers. `hopper RESULTS` runs Hopper on a MaplePy run.
 - A Python interface: `maplepy.compute()`, `run_folder()`, `additivity()` and `validate()`, and the two engines' own functions through `maplepy.engine()` and `maplepy.hopper_engine()`.
@@ -14,13 +14,24 @@ The first packaged release, running MaplePy 1.3.6 and Hopper 1.2.9.
 - Tests: the three sourced targets asserted independently, each of MaplePy's decisions on constructed structures, Hopper's classification of the examples, the command lines, and the release metadata; CI on Linux with Python 3.11 to 3.13 under pandas 2 and 3, and on Windows and macOS with Python 3.13.
 - Constructed example CIFs, none from the ICSD.
 - The notebooks' prose corrected where it still described earlier versions: in MaplePy, the validation tolerance, brookite (given for reference, not computed), the batch cell's picker and output folder, the definition of `disordered`, and the docstring of `batch_maple()`; in Hopper, see 1.2.9. No MaplePy code changed, so it keeps 1.3.6.
-- The reference data in `data/`: the binary oxide table (1.1.1), `maple_library.json` (1.0.1) and `common_oxidation_states.json`. The May 2026 repository had only the binary table, so its oxidation-state chain lost two levels.
+- The reference data in `data/`: the binary oxide table (1.3.0), `maple_library.json` (1.0.1) and `common_oxidation_states.json`. The May 2026 repository had only the binary table, so its oxidation-state chain lost two levels.
+- `tools/alternative_assignments.py` writes the evidence Hopper 1.3.0 needs for Type 2.1 (see 1.3.0).
 
-Checked against the study: Hopper 1.2.9, run on the MaplePy 1.3.6 results for the 938 perovskites and 472 pyrochlores of the *J. Appl. Cryst.* manuscript, gives every structure the classification Hopper 1.2.8 gave it, with identical residuals.
+Checked against the study: Hopper 1.3.0, run on the MaplePy 1.3.6 results for the 938 perovskites and 472 pyrochlores of the *J. Appl. Cryst.* manuscript with the study's two evidence files, gives every structure the classification the revised manuscript reports (714 and 299 additive). Without the evidence files it gives the same codes except 2.1 and the anion-contact 2.5, and says which test did not run.
 
 ## Hopper
 
-### 1.2.9 – unreleased
+### 1.3.0 – 16th November 2026
+
+The classification of the revised *J. Appl. Cryst.* manuscript. Results change: on the study's MaplePy 1.3.6 results, 714 of 938 perovskites and 299 of 472 pyrochlores are additive, against 636 and 293 under 1.2.9.
+
+- **Type 2.1 on evidence.** A structure is 2.1 when a different charge-balanced assignment of common oxidation states, recomputed through MaplePy, makes it additive and the chemistry agrees (`ASSIGNMENT_CHEMISTRY_REJECTED` lists the exceptions, with reasons). Hopper reads the evidence from `alternative_assignments.csv` in the run folder, which `tools/alternative_assignments.py` writes. The rule it replaces, Δ > 10% in an ordered, oxygen-balanced structure, assigned 2.1 to a large residual whatever caused it: 29 structures in the study, against 4 on evidence. 2.1 is now tested first, because a wrong deposited state can ask for a binary that does not exist.
+- **A third Type 2.5 detector:** the shortest anion–anion contact below 2.35 Å (`ANION_ANION_MIN_ANG`), measured by Eir 2.0.46 or later and read from `eir_structures.csv` in the run folder. It finds misplaced oxygen sublattices that neither of MaplePy's geometry screens sees: 35 perovskites and all 28 pyrochlore 2.5s in the study, among them 18 of the 22 pyrochlores whose oxygen parameter was quoted for the wrong origin setting (the other four have contacts above 2.35 Å and are 3.1). Each label names the detectors that fired.
+- **Reference table 1.3.0** (109 entries). Bi<sub>2</sub>O<sub>3</sub>, PbO, HgO, TcO<sub>2</sub> and Tl<sub>2</sub>O, which decompositions use, are ICSD medians (17, 10, 3, 2 and 2 ambient entries); the hand-set values were in error by up to 26% (Bi<sub>2</sub>O<sub>3</sub>). Ni<sub>2</sub>O<sub>3</sub> is re-estimated and Co<sub>2</sub>O<sub>3</sub> added by scaling six calibrated corundum sesquioxides by the ratio of cation–oxygen radius sums (Shannon radii, low-spin Ni<sup>3+</sup> 0.56 Å and Co<sup>3+</sup> 0.545 Å). Bi<sub>2</sub>O<sub>5</sub>, Ru<sub>2</sub>O<sub>5</sub>, RuO<sub>3</sub> and Re<sub>2</sub>O<sub>5</sub> are removed, because no ambient binary oxide of those states exists, so structures that need one are 1.3.
+- Co<sup>3+</sup> decomposes to Co<sub>2</sub>O<sub>3</sub> like any other M<sup>3+</sup>, rather than to ⅓ Co<sub>3</sub>O<sub>4</sub>, which left the oxygen unbalanced and made every Co<sup>3+</sup> structure a 2.4.
+- The classification summary prints each code's registry label, rather than the first structure's (which for 2.1 and 2.5 carries that structure's states or detectors), and counts the 2.5 structures each detector found.
+
+### 1.2.9 – not released separately
 
 - Every decomposition that uses an estimated or unsourced reference value names it, in a new column, `estimated_binaries`, and the batch summary counts them. 23 of the 112 values are estimates with no source, and the source recorded for a 24th, Cu<sub>2</sub>O, does not reproduce (table 1.1.1). In the study, no structure uses Cu<sub>2</sub>O, and 82 of the 1,380 decomposed structures rest on one: 52 perovskites (43 of them on Ni<sub>2</sub>O<sub>3</sub>) and 30 pyrochlores. Nothing is reclassified.
 - The inline fallback labels "Estimated, to be updated" read "Estimated, unsourced".

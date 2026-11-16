@@ -14,11 +14,10 @@ def _binary_formula_for(element, oxi_state):
     oxi = round(abs(oxi_state))
 
     # ── Special cases ─────────────────────────────────────────────
-    # Co3O4 spinel: Co2+[Co3+]2O4. Use as the Co3+ reference.
-    # Decomposition: 1 Co3+ requires 1/3 Co3O4 (3 Co per fu),
-    # contributing 4/3 O per Co3+.
-    if element == "Co" and oxi == 3:
-        return ("Co3O4", 3, 4)
+    # Up to 1.2.9, Co3+ was referred to Co3O4 (Co2+[Co3+]2O4, 1/3 Co3O4
+    # per Co3+), which left the oxygen unbalanced and made every Co3+
+    # decomposition a 2.4. 1.3.0 (ui5052 R1): Co3+ decomposes to the
+    # isostructural Co2O3 estimate like any other M3+, so no special case.
 
     patterns = {
         1: (f"{element}2O",  2, 1),

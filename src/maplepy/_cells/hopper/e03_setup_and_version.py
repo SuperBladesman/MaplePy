@@ -31,7 +31,11 @@ SHEFFIELD = {
 # says which notebook classified it. MaplePy does the same.
 # v1.2.9: the decomposition records which binaries are estimates; see
 # ESTIMATED_BINARIES in Section 1.
-HOPPER_VERSION = '1.2.9'
+# 1.3.0 (ui5052 R1): Type 2.1 on evidence from alternative_assignments.csv
+# rather than a residual above 10%; a third Type 2.5 detector, the shortest
+# anion-anion contact from Eir (eir_structures.csv); binary table v1.3.0 and
+# Co3+ decomposed to Co2O3. See Sections 1, 2 and 4.
+HOPPER_VERSION = '1.3.0'
 
 # ── Hoppe's criterion, named once ──────────────────────────────────────────
 #

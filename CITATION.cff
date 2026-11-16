@@ -8,6 +8,7 @@ authors:
     affiliation: University of Sheffield
     orcid: "https://orcid.org/0000-0002-1061-1230"
 version: 1.4.0
+date-released: 2026-11-16
 abstract: >-
   MaplePy computes per-site and total MAPLE (Madelung Part of Lattice
   Energy) values from CIF files with the Ewald summation in pymatgen,
@@ -15,9 +16,9 @@ abstract: >-
   multiplicities, treating disorder by mean-field charges, and flagging
   geometry that cannot carry a Madelung energy. Hopper decomposes ternary
   oxides into their binary oxides, computes the residual of Hoppe's
-  additivity theorem against a 112-entry reference table, and classifies
+  additivity theorem against a 109-entry reference table, and classifies
   each structure into one of twelve codes in three tiers. This release is
-  maplepy 1.4.0, running MaplePy 1.3.6 and Hopper 1.2.9.
+  maplepy 1.4.0, running MaplePy 1.3.6 and Hopper 1.3.0.
 license: MIT
 repository-code: "https://github.com/SuperBladesman/MaplePy"
 keywords:

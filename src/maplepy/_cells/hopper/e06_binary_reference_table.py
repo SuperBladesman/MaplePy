@@ -28,7 +28,7 @@ BINARY_MAPLE_FALLBACK = {
     # Estimated rock salts
     "EuO":(902.9,  "Rock salt Fm-3m", "Median of 9 ambient ICSD Fm-3m entries, range 901-904; 3 zeros excluded"),
     "CuO":(1093.6, "Rock salt Fm-3m", "1 ambient ICSD Fm-3m entry; HP polymorph, not tenorite"),
-    "PbO":(810.0,  "Litharge",         "Estimated, unsourced"),
+    "PbO":(868.5,  "Litharge",         "ICSD median of 10 ambient entries (ui5052 R1)"),
 
     # ── Antifluorite M2O (Fm-3m) ──────────────────────────────────────
     # ICSD median values
@@ -40,7 +40,7 @@ BINARY_MAPLE_FALLBACK = {
     "Cs2O":(450.0,  "Antifluorite Fm-3m", "Estimated, unsourced"),
     "Ag2O":(700.0,  "Cuprite Pn-3m",      "Estimated, unsourced"),
     "Cu2O":(730.0,  "Cuprite Pn-3m",      "MaplePy v4, a=4.270"),
-    "Tl2O":(650.0,  "Various",            "Estimated, unsourced"),
+    "Tl2O":(562.0,  "anti-CdCl2 R-3m",    "ICSD median of 2 ambient entries (ui5052 R1)"),
     "Pd2O":(700.0,  "Various",            "Estimated, Pd1+ binary"),
 
     # ── Rutile MO2 (P4_2/mnm) ─────────────────────────────────────────
@@ -65,7 +65,7 @@ BINARY_MAPLE_FALLBACK = {
     "TaO2":(3145.9, "Rutile P4_2/mnm", "Median of 2 ambient ICSD P4_2/mnm entries, range 3130-3162"),
     "SiO2":(3593.7, "Stishovite P4_2/mnm", "Median of 42 ambient ICSD P4_2/mnm entries, range 3575-3664"),
     # Estimated rutiles
-    "TcO2":(3250.0, "Rutile P4_2/mnm", "Estimated from Ru/Rh/Os trend"),
+    "TcO2":(3191.2, "MoO2-type P2_1/c", "ICSD median of 2 ambient entries (ui5052 R1)"),
     "SbO2":(3100.0, "Rutile P4_2/mnm", "Estimated, unsourced"),
 
     # ── Fluorite MO2 (Fm-3m) ──────────────────────────────────────────
@@ -92,7 +92,8 @@ BINARY_MAPLE_FALLBACK = {
     "Ga2O3":(4183.4, "Corundum R-3c", "Median of 3 ambient ICSD R-3c entries, range 4181-4198"),
     "Rh2O3":(4072.3, "Corundum R-3c", "Median of 4 ambient ICSD R-3c entries, range 4024-4087"),
     # Estimated corundums
-    "Ni2O3":(4100.0, "Estimated",     "Interpolated from 3d corundum trend Ti-V-Cr-Fe; no stable ambient phase in ICSD"),
+    "Ni2O3":(4292.5, "Corundum R-3c", "Estimated: isostructural scaling of six corundum M2O3 to low-spin Ni3+ (Shannon 0.56 A)"),
+    "Co2O3":(4325.6, "Corundum R-3c", "Estimated: isostructural scaling of six corundum M2O3 to low-spin Co3+ (Shannon 0.545 A)"),
 
     # ── Spinel (Fd-3m) ────────────────────────────────────────────────
     # Co2O3 does not exist as a stable ambient phase; Co3O4 spinel used instead
@@ -125,25 +126,25 @@ BINARY_MAPLE_FALLBACK = {
     "Lu2O3":(3727.0, "Bixbyite Ia-3", "Median of 12 ambient ICSD Ia-3 entries, range 3703-3735"),
 
     # ── Other binaries ────────────────────────────────────────────────
-    "Bi2O3":(2580.0, "Monoclinic P2_1/c", "MaplePy v4, alpha-Bi2O3 — to be updated"),
-    "HgO":(850.0,    "Various",            "Estimated, unsourced"),
+    "Bi2O3":(3471.8, "Monoclinic P2_1/c", "ICSD median of 17 ambient alpha-Bi2O3 entries (ui5052 R1)"),
+    "HgO":(967.0,    "Montroydite Pnma",   "ICSD median of 3 ambient entries (ui5052 R1)"),
 
     # ── Higher-valent oxides ──────────────────────────────────────────
     "V2O5":(9454.0,  "Pmmn",  "Median of 17 ambient ICSD Pmmn entries, range 9393-9638"),
     "Nb2O5":(8988.2, "C2/c",  "Median of 2 ambient ICSD C2/c entries, range 8984-8992"),
     "Ta2O5":(9127.2, "C2/c",  "1 ambient ICSD C2/c entry"),
     "Sb2O5":(8955.4, "C2/c",  "Median of 2 ambient ICSD C2/c entries, range 8955-8956"),
-    "Bi2O5":(4300.0, "Various",     "Estimated, unsourced"),
+    # Bi2O5 removed (ui5052 R1): no ambient binary oxide exists; see MISSING_BINARY_STATUS
     "WO3":(4600.0,   "ReO3-type",   "Estimated, unsourced"),
     "MoO3":(4500.0,  "Various",     "Estimated, unsourced"),
     "CrO3":(4400.0,  "Various",     "Estimated, unsourced"),
     "OsO3":(4500.0,  "Various",     "Estimated, unsourced"),
-    "RuO3":(4500.0,  "Various",     "Estimated, Ru6+ binary"),
+    # RuO3 removed (ui5052 R1): no ambient binary oxide exists; see MISSING_BINARY_STATUS
     "ReO3":(4600.0,  "ReO3-type",   "Estimated, Re6+ binary"),
-    "Re2O5":(4400.0, "Various",     "Estimated, Re5+ binary"),
+    # Re2O5 removed (ui5052 R1): no ambient binary oxide exists; see MISSING_BINARY_STATUS
     "Re2O7":(5000.0, "Various",     "Estimated, unsourced"),
     "Tc2O7":(5000.0, "Various",     "Estimated, unsourced"),
-    "Ru2O5":(4250.0, "Various",     "Estimated, Ru5+ binary"),
+    # Ru2O5 removed (ui5052 R1): no ambient binary oxide exists; see MISSING_BINARY_STATUS
     "W2O5":(4300.0,  "Various",     "Estimated, W5+ binary"),
     "Mo2O3":(3300.0, "Various",     "Estimated, Mo3+ binary"),
 }
@@ -271,6 +272,16 @@ print(f'  binary reference: {len(_json_lookup)} entries from {_binary_source}')
 # decomposition that uses one says so (`estimated_binaries`). Nothing is
 # reclassified on that account: a residual resting on an estimate is a
 # residual against a weaker reference, and the reader is told which.
+#
+# 1.3.0: table v1.3.0, 109 entries. Five estimates that decompositions
+# used were wrong by up to 26% and are now ICSD medians (Bi2O3, PbO, HgO,
+# TcO2, Tl2O). Four entries for oxides that do not exist are removed (Bi2O5,
+# Ru2O5, RuO3, Re2O5), so structures that need one are 1.3. Ni2O3 is
+# re-estimated and Co2O3 added by scaling six calibrated corundum
+# sesquioxides by the ratio of cation-oxygen radius sums (Shannon, low-spin
+# Ni3+ 0.56 A, Co3+ 0.545 A). That leaves 15 estimates, the two corundum
+# values and 13 set by hand that enter no decomposition in the paper, and
+# Cu2O unsourced.
 def estimated_binaries(source_path):
     """The formulae whose reference value is an estimate, or unsourced.
 

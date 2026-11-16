@@ -16,6 +16,11 @@
 # defects, 2.7 then 2.5, whatever the residual; Additive; then 2.1, 2.6,
 # 2.3, 2.4; then 3.1. A caveat must not mask a defect. 1.2 and 2.2 are
 # defined and cannot arise from a MaplePy run (see the registry).
+#
+# 1.3.0 (ui5052 R1): 2.1 is assigned on evidence and moves to the front,
+# so the order is now 2.1; Tier 1; 2.7, 2.5; Additive; 2.6, 2.3, 2.4; 3.1.
+# The evidence is read from alternative_assignments.csv and the anion-anion
+# contacts for 2.5 from eir_structures.csv, both in the run folder.
 
 # ── Classification registry ──────────────────────────────────────────────
 # Central definition of all codes.  Add new codes here; the classifier
@@ -62,9 +67,14 @@ CLASSIFICATION_REGISTRY = {
             'site shared by two cations, or a mean over a non-stoichiometric '
             'refinement. Where the mean was not an integer the decomposition '
             'records it and this code is assigned on that evidence.'),
+    # ui5052 R1: evidence, not a residual size. 'Delta > 10%' caught bad
+    # reference values and setting errors once the table was calibrated,
+    # and missed the real assignment errors, which sat in Tier 1.
     '2.1': (2, 'Oxidation state assignment error',
-            'Delta > 10% in an ordered, oxygen-balanced structure. Points to '
-            'incorrect oxidation states in the CIF.'),
+            'A different charge-balanced assignment of common oxidation '
+            'states, recomputed through MaplePy, makes the structure additive '
+            'and the chemistry agrees with it. Tested before Tier 1, because '
+            'a wrong deposited state can ask for a binary that does not exist.'),
     # v1.2.6: RETAINED, not retired. MaplePy v1.1 stopped inferring Z from
     # composition and derives it from the gcd of the site multiplicities, so
     # this cannot fire on a MaplePy result and is zero throughout this study.
@@ -83,7 +93,7 @@ CLASSIFICATION_REGISTRY = {
             'approximation. Residual may reflect averaging artefact.'),
     '2.4': (2, 'Oxygen non-stoichiometry',
             'Oxygen count from binary decomposition does not match ternary. '
-            'Decomposition not well-defined (e.g. Co3O4 for Co2O3).'),
+            'Decomposition not well-defined.'),
     # v1.1: the count has been removed from this description. It read 32
     # here, 19 in the detector's docstring and 31 in the manuscript, all
     # shipping together. A number that lives in a string drifts from the data
@@ -94,11 +104,12 @@ CLASSIFICATION_REGISTRY = {
     # 26 perovskites under 1.6 A were already caught by CV, and 8 structures
     # caught by CV have an ordinary 1.98 A shortest contact.
     '2.5': (2, 'Structural coordinate error',
-            'Either the O-site MAPLE coefficient of variation exceeds 0.05, '
-            'or the shortest interatomic contact is below MaplePy\'s '
-            'SHORT_CONTACT_ANG. Both indicate unphysical interatomic '
-            'distances from Wyckoff site mis-assignment or wrong fractional '
-            'coordinates.'),
+            'The O-site MAPLE coefficient of variation exceeds 0.05, the '
+            'shortest interatomic contact is below MaplePy\'s '
+            'SHORT_CONTACT_ANG, or (ui5052 R1) the shortest anion-anion '
+            'contact is below ANION_ANION_MIN_ANG, measured by Eir. Each '
+            'indicates unphysical interatomic distances from Wyckoff site '
+            'mis-assignment or wrong fractional coordinates.'),
     # v1.2.2: ACTIVE. Reserved since the first version and assignable now
     # that MaplePy v1.3.3 reports which sublattice carries the fractional
     # occupancy. Tested before 2.3, because an oxygen-deficient refinement
@@ -160,8 +171,9 @@ MISSING_BINARY_STATUS = {
     # the state is real; the binary oxide is not
     'Ru2O3': ('no_binary', 'Ru(III) has no ambient binary oxide; RuO2 is the '
                            'stable oxide.'),
-    'FeO2':  ('no_binary', 'Fe(IV) has no ambient binary oxide. CaFeO3 and '
-                           'EuFeO3 really do contain Fe(IV).'),
+    'FeO2':  ('no_binary', 'Fe(IV) has no ambient binary oxide. CaFeO3 '
+                           'really does contain Fe(IV); EuFeO3 220056 is '
+                           'deposited as Eu(II)/Fe(IV) and is Eu(III)/Fe(III).'),
     'CoO2':  ('no_binary', 'Co(IV) has no ambient binary oxide; CoO2 exists '
                            'only as a delithiated layered phase.'),
     'Cu2O3': ('no_binary', 'Cu(III) has no ambient binary oxide; Cu2O and '
@@ -175,6 +187,15 @@ MISSING_BINARY_STATUS = {
                            'RhO2 are the binaries.'),
     'Ir2O5': ('no_binary', 'Ir(V) has no ambient binary oxide; IrO2 is the '
                            'stable oxide.'),
+    # ui5052 R1: these four were hand-set estimates. The states are real and
+    # the binaries are not, which is the 1.3 case, as for Os2O5 and Ir2O5.
+    'Bi2O5': ('no_binary', 'Bi(V) has no ambient binary oxide; NaBiO3 and '
+                           'the Bi(V) perovskites are ternary.'),
+    'Ru2O5': ('no_binary', 'Ru(V) has no ambient binary oxide; RuO2 is the '
+                           'stable oxide.'),
+    'RuO3':  ('no_binary', 'Ru(VI) has no ambient solid binary oxide.'),
+    'Re2O5': ('no_binary', 'Re(V) has no ambient binary oxide; ReO2, ReO3 '
+                           'and Re2O7 are the known ones.'),
 
     # the charge is not a state
     'BiO2':  ('no_state',
@@ -190,6 +211,67 @@ MISSING_BINARY_STATUS = {
 }
 
 _MISSING_STATUS_CODE = {'table': '1.1', 'no_binary': '1.3', 'no_state': '1.4'}
+
+
+# ── ui5052 R1: evidence for Type 2.1 ─────────────────────────────────────────
+# alternative_assignments.csv, written into the run folder by the MaplePy-side
+# test (every charge-balanced assignment of common oxidation states, ternary
+# MAPLE recomputed with it, binaries from this table). An assignment that makes
+# the structure additive is evidence; chemistry decides. Entries where the
+# chemistry is known to contradict the additive assignment are listed here,
+# with the reason, so the rejection is auditable.
+ASSIGNMENT_CHEMISTRY_REJECTED = {
+    27120: 'Pb2Sb2O7 is Pb(II)/Sb(V), lead antimonate; the Pb(IV)/Sb(III) '
+           'assignment that makes it additive is not its chemistry.',
+}
+
+
+# ── ui5052 R1: the third Type 2.5 detector ──────────────────────────────────
+# Two oxide ions cannot sit closer than about 2.35 A; the shortest O-O edge in
+# any ordered oxide in these families is longer. Measured by Eir (G2 packing
+# gate, split sites and zero-occupancy positions excluded), read from the Eir
+# structures table placed in the run folder as eir_structures.csv.
+ANION_ANION_MIN_ANG = 2.35
+
+
+def load_anion_contacts(run_dir):
+    """{source_cif: shortest anion-anion contact, A} from eir_structures.csv."""
+    from pathlib import Path as _Path
+    import pandas as _pd
+    _f = _Path(run_dir) / 'eir_structures.csv'
+    if not _f.is_file():
+        print('  NOTE: no eir_structures.csv in the run folder, so the '
+              'anion-contact half of 2.5 did not run.')
+        return {}
+    _d = _pd.read_csv(_f, usecols=['filename', 'anion_anion_min'])
+    return {r.filename: float(r.anion_anion_min) for r in _d.itertuples()
+            if r.anion_anion_min == r.anion_anion_min}
+
+
+def load_assignment_evidence(run_dir):
+    """{source_cif: (states, delta_pct)} for the assignments that make a
+    structure additive with states different from those deposited."""
+    import json as _json, re as _re
+    from pathlib import Path as _Path
+    import pandas as _pd
+    _f = _Path(run_dir) / 'alternative_assignments.csv'
+    if not _f.is_file():
+        print('  NOTE: no alternative_assignments.csv in the run folder, so '
+              'the Type 2.1 evidence test did not run.')
+        return {}
+    _d = _pd.read_csv(_f)
+    out = {}
+    for _, r in _d.iterrows():
+        if not isinstance(r.get('best_states'), str) or not r['best_states']:
+            continue
+        st = _json.loads(r['best_states']); dep = _json.loads(r['deposited'])
+        if all(st[k] in dep.get(k, []) for k in st):
+            continue
+        m = _re.search(r'CollCode(\d+)', str(r['source_cif']))
+        if m and int(m.group(1)) in ASSIGNMENT_CHEMISTRY_REJECTED:
+            continue
+        out[r['source_cif']] = (st, float(r['best_delta']))
+    return out
 
 
 def as_missing_list(value):
@@ -479,7 +561,8 @@ def detect_anion_vacancy(cif_name, summary_df, summary_index=None):
 
 
 def classify_additivity(df_add, results_df, summary_df,
-                        threshold_additive=ADDITIVE_THRESHOLD_PCT):
+                        threshold_additive=ADDITIVE_THRESHOLD_PCT,
+                        assignment_evidence=None, anion_contacts=None):
     """
     Assign a tiered numeric classification to each structure based on
     its additivity residual and metadata.
@@ -505,10 +588,10 @@ def classify_additivity(df_add, results_df, summary_df,
 
     Notes
     -----
-    v1.2.9: the order is the one in the header of this cell, not
-    ascending code number: Tier 1; then 2.7 and 2.5 whatever the
-    residual; then Additive; then 2.1, 2.6, 2.3, 2.4; then 3.1. The
-    first that applies is assigned.
+    1.3.0: the order is the one in the header of this cell, not
+    ascending code number: 2.1 on evidence; Tier 1; then 2.7 and 2.5
+    whatever the residual; then Additive; then 2.6, 2.3, 2.4; then 3.1.
+    The first that applies is assigned.
     """
     df = df_add.copy()
     # v1.2.4: two indexes, built once, for every lookup below.
@@ -532,7 +615,22 @@ def classify_additivity(df_add, results_df, summary_df,
                   f"written by MaplePy before v1.3.3, so {_tests} did not "
                   f"run.")
 
+    assignment_evidence = assignment_evidence or {}
+    anion_contacts = anion_contacts or {}
     for idx, row in df.iterrows():
+
+        # ── Code 2.1 (ui5052 R1): evidence of a wrong deposited state ──
+        # First, so that a state that asks for a non-existent binary is
+        # reported as the defect it is rather than as a Tier 1 caveat.
+        _ev = assignment_evidence.get(row['source_cif'])
+        if _ev and _ev[1] < threshold_additive:
+            _st = ', '.join(f'{k}{v}+' for k, v in sorted(_ev[0].items()))
+            df.at[idx, 'classification']       = '2.1'
+            df.at[idx, 'classification_tier']   = 2
+            df.at[idx, 'classification_label']  = (
+                f"{_label_for_code('2.1')} (additive as {_st}, "
+                f"{_ev[1]:.2f}%)")
+            continue
 
         # ── Codes 1.1, 1.3, 1.4: the decomposition lacked a binary ──
         # v1.2.3: three findings, not one. Which of them is decided by
@@ -583,10 +681,12 @@ def classify_additivity(df_add, results_df, summary_df,
             continue
 
         # ── Code 2.5: structural coordinate error ──────────────────
-        # Two detectors, either sufficient, and the label says which
+        # Three detectors, any one sufficient, and the label says which
         # found it. The CV test sees a B-site at 4a instead of 4b in a
         # 20-site Pnma cell; the distance test sees any contact below
-        # SHORT_CONTACT_ANG anywhere.
+        # SHORT_CONTACT_ANG anywhere; and (1.3.0) the anion-anion
+        # test sees an oxygen sublattice with two oxide ions closer than
+        # ANION_ANION_MIN_ANG, as Eir measures it.
         #
         # Both are checked before Additive, because DyCrO3 138222 passes
         # the 1% threshold by coincidence despite the Wyckoff error and
@@ -595,9 +695,12 @@ def classify_additivity(df_add, results_df, summary_df,
             row['source_cif'], results_df, summary_df,
             results_index=_ridx, summary_index=_sidx)
         _short = detect_short_contact(row['source_cif'], summary_df, _sidx)
-        if _cv or _short:
-            _how = ('O-site MAPLE CV and short contact' if _cv and _short
-                    else 'short contact' if _short else 'O-site MAPLE CV')
+        _aa = anion_contacts.get(row['source_cif'])
+        _anion = _aa is not None and _aa < ANION_ANION_MIN_ANG
+        if _cv or _short or _anion:
+            _how = ' and '.join(n for n, f in (
+                ('O-site MAPLE CV', _cv), ('short contact', _short),
+                ('anion-anion contact', _anion)) if f)
             df.at[idx, 'classification']       = '2.5'
             df.at[idx, 'classification_tier']   = 2
             df.at[idx, 'classification_label']  = (
@@ -618,16 +721,8 @@ def classify_additivity(df_add, results_df, summary_df,
         # Applied in ascending code order so the lowest applicable
         # code wins.
 
-        # ── Code 2.1: oxidation state assignment error ──────────────
-        # Very large residual (>10%) in an ordered structure with
-        # balanced oxygen points to incorrect oxidation states in the
-        # CIF, producing a wrong binary decomposition.
-        if (row['delta_pct'] is not None and row['delta_pct'] > 10.0
-                and not row['disordered'] and row['oxygen_balanced']):
-            df.at[idx, 'classification']       = '2.1'
-            df.at[idx, 'classification_tier']   = 2
-            df.at[idx, 'classification_label']  = _label_for_code('2.1')
-            continue
+        # ── Code 2.1: now assigned on evidence, at the top of the loop ──
+        # ui5052 R1 removed the 'delta > 10%' branch that stood here.
 
         # ── Code 2.2: defined, and unreachable from a MaplePy result ──
         # There was a branch here assigning 2.2 to every Z = 1 structure,
@@ -664,8 +759,8 @@ def classify_additivity(df_add, results_df, summary_df,
 
         # ── Code 2.4: oxygen non-stoichiometry ──────────────────────
         # Oxygen count from binary decomposition does not match the
-        # ternary oxygen count.  Principal cause: Co3O4 used in place
-        # of the non-existent Co2O3.
+        # ternary oxygen count.  Up to 1.2.9 the principal cause was
+        # Co3O4 standing in for Co2O3; see Section 2.
         if not row['oxygen_balanced']:
             df.at[idx, 'classification']       = '2.4'
             df.at[idx, 'classification_tier']   = 2
