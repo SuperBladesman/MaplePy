@@ -9,6 +9,14 @@ authors:
     orcid: "https://orcid.org/0000-0002-1061-1230"
 version: 1.4.0
 date-released: 2026-11-16
+doi: 10.5281/zenodo.24294131
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24294131
+    description: "This release, maplepy 1.4.0"
+  - type: doi
+    value: 10.5281/zenodo.24294130
+    description: "All releases (resolves to the latest)"
 abstract: >-
   MaplePy computes per-site and total MAPLE (Madelung Part of Lattice
   Energy) values from CIF files with the Ewald summation in pymatgen,

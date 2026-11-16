@@ -6,6 +6,7 @@
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)
 ![maplepy 1.4.0](https://img.shields.io/badge/maplepy-1.4.0-green.svg)
 [![tests](https://github.com/SuperBladesman/MaplePy/actions/workflows/tests.yml/badge.svg)](https://github.com/SuperBladesman/MaplePy/actions/workflows/tests.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24294131.svg)](https://doi.org/10.5281/zenodo.24294131)
 
 MaplePy reads a folder of CIF files and computes the electrostatic (Madelung) part of the lattice energy of each structure, per site and in total, with the Ewald summation in *pymatgen*. Hopper takes the results and asks of each ternary oxide whether its MAPLE equals the weighted sum of its binary oxides, as Hoppe's additivity theorem predicts to within about 1%, and, where it does not, why not.
 
@@ -171,7 +172,11 @@ No ICSD file is distributed here or used in the tests. ICSD CIFs are licensed by
 
 ## Citation
 
-If you use MaplePy or Hopper, please cite the release you used (`CITATION.cff`; GitHub's "Cite this repository" reads it) and the paper describing the method:
+If you use MaplePy or Hopper, please cite the release you used (`CITATION.cff`; GitHub's "Cite this repository" reads it) and the paper describing the method. This release:
+
+> N. Reeves-McLaren, MaplePy, maplepy 1.4.0 (MaplePy 1.3.6, Hopper 1.3.0), Zenodo, 2026, https://doi.org/10.5281/zenodo.24294131.
+
+Every release is archived on Zenodo; https://doi.org/10.5281/zenodo.24294130 resolves to the latest. The paper:
 
 > N. Reeves-McLaren and P. Gross, "Database-Scale Validation of Hoppe's MAPLE Additivity Theorem for Perovskite and Pyrochlore Oxides", *J. Appl. Cryst.*, under review.
 
